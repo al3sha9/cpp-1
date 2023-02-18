@@ -3,17 +3,19 @@ using namespace std;
 
 int main()
 {
-    int marks;
-    cout << "ENTER YOUR MARKS\n";
-    cin >> marks;
+    int a, b;
+    cout << "ENTER NUMBER A\n";
+    cin >> a;
+    cout << "ENTER NUMBER B\n";
+    cin >> b;
 
-    if (marks >= 45)
+    if (a >= b)
     {
-        cout << "SUCCESSFULLY PASSED\n";
+        cout << "NUMBER A IS GREATER\n";
     }
     else
     {
-        cout << "SUCCESSFULY FAILED :)";
+        cout << "NUMBER B IS GREATER";
     }
 
     return 0;
