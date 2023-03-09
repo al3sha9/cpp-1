@@ -3,7 +3,7 @@
 using namespace std;
 int main(){
 
-float a, b, c, x1, x2, discriminant, realside, imaginary;
+float a, b, c, x1, x2, discriminant;
     cout << "Enter coefficients a, b and c: ";
     cin >> a >> b >> c;
     discriminant = b*b - 4*a*c;
