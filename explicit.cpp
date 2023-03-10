@@ -1,4 +1,5 @@
 #include <iostream>
+using namespace std;
 
 int main()
 {
@@ -7,7 +8,7 @@ int main()
 
 
     double d { (double)x / y }; // convert x to a double so we get floating point division
-    std::cout << d; // prints 2.5
+    cout << d; // prints 2.5
 
     return 0;
 }
