@@ -12,7 +12,7 @@ int main()
 
     time_t now = time(0);
     char* dt = ctime(&now);
-
+    cout<<endl<<"<--------------------------------------->"<<endl;
     cout << "Welcome to Your Personal Assistant (PERSONAL MANAGEMENT SYSTEM)" << endl;
     cout << "Today is " << dt << endl;
 
