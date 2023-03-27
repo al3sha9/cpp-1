@@ -26,7 +26,7 @@ int main()
 
 	cout << "\n\n\n<-------------------------------------------------------->\n";
 
-	cout << "\n\tWelcome to Your Personal Assistant (PERSONAL MANAGEMENT SYSTEM)" << endl;
+	cout << "\n\tWelcome to Your Personal Assistant" << endl;
 	cout << "\tToday is " << dt << endl;
 
 pass:
