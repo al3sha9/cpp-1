@@ -264,7 +264,7 @@ pass:
 			}
 			else
 			{
-				cout << "Sir/Ma'am " << user << " Invalid input, please try again." << endl;
+				cout << "\nSir/Ma'am " << user << " Invalid input, please try again." << endl;
 				cout << "Check the spellings or the data you have entered." << endl;
 				cout << endl;
 				goto meetingReminder;
@@ -275,32 +275,32 @@ pass:
 		else if (choice == 6)
 		{
 			int temperature;
-			cout << "Want to know what's the weather today? " << endl;
-			cout << "Just type in the temperature: ";
+			cout << "\n\nWant to know what's the weather today? \n" << endl;
+			cout << "Just type in the temperature: \n";
 			cin >> temperature;
 			if (temperature >= 30)
 			{
-				cout << "It is going to be hot today!" << endl;
+				cout << "\nIt is going to be hot today!\n" << endl;
 				goto rep;
 			}
 			else if (temperature >= 20 && temperature <= 29)
 			{
-				cout << "It is going to be warm today! Enjoy." << endl;
+				cout << "\nIt is going to be warm today! Enjoy.\n" << endl;
 				goto rep;
 			}
 			else if (temperature >= 10 && temperature <= 18)
 			{
-				cout << "It is going to be cold today! Stay warm." << endl;
+				cout << "\nIt is going to be cold today! Stay warm.\n" << endl;
 				goto rep;
 			}
 			else if (temperature < 10)
 			{
-				cout << "It is going to be freezing. Chance of snowfall." << endl;
+				cout << "\nIt is going to be freezing. Chance of snowfall.\n" << endl;
 				goto rep;
 			}
 			else
 			{
-				cout << "Please enter the correct temperature." << endl;
+				cout << "\nPlease enter the correct temperature.\n" << endl;
 				goto rep;
 			}
 		}
