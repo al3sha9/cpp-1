@@ -10,3 +10,20 @@ OOP project topics:
 6. access specifiers
 7. encapsulation
 8. inheriaction
+
+
+Classes and Objects: You can create classes for various game elements such as Item, Character, and Location. These classes will encapsulate attributes and behaviors associated with items, characters, and game locations.
+
+Inheritance: You can use inheritance to create specialized types of characters or items. For example, you could have a base Character class, and then derive classes like PlayerCharacter and NonPlayerCharacter. Similarly, you can derive classes for different item types.
+
+Constructor and Destructor: Implement constructors and destructors for your classes to handle object initialization and cleanup, ensuring proper memory management and resource release.
+
+Access Specifier Encapsulation: Utilize access specifiers (public, private, protected) to encapsulate data within your classes. For example, you can make certain attributes private to control access and modification.
+
+Pointers: Use pointers when you need to manage dynamic memory allocation, especially for objects with varying lifetimes. For instance, when a player collects an item, you can dynamically allocate memory for that item object and manage it using a pointer.
+
+Nested Structures: You might use nested structures or nested classes to represent complex objects or properties. For example, you could nest an Inventory structure within the PlayerCharacter class to manage the collected items.
+
+Game Flow and Decision-Making: Implement game logic to handle player choices, character interactions, and item collection. This can involve complex conditional statements and loops.
+
+Text-Based Interface: Develop a text-based user interface that displays the game's progress, character interactions, and inventory management.
