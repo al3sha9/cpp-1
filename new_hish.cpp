@@ -21,6 +21,11 @@ public:
         cout << "Author: " << author << endl;
         cout << "Quantity: " << quantity << endl;
     }
+
+    bool operator==(const LibraryItem &other) const
+    {
+        return (title == other.title) && (author == other.author);
+    }
 };
 
 class LibraryMember

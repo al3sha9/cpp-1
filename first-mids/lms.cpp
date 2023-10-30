@@ -1,15 +1,9 @@
 #include <iostream>
 #include <string>
-#include <ctime>
-
 using namespace std;
-// FoP Project 1
+
 int main()
-{ /*Note:
-	  if you enter incorrect data according to the data type, then it will repeat the process.
-	  Otherwise if you type something different rather than the datatype it will cause a loop that will
-	  run continously, until you close the program. Be careful!
-  */
+{
 	string user;
 	int password, choice, salary, finance_choice, add_finance, sub_finance, total, tax, amount_tax;
 	int sec_choice;
@@ -42,21 +36,20 @@ pass:
 			cout << "You choose Finance" << endl;
 			cout << "What is your Salary?\n";
 			cin >> salary;
-			cout << "Do You want to: \n 1.Add Income + \n 2. Remove Expense - \n 3.Zakat \n 4 Taxes" << endl;
+			cout << "Do You want to: \n 1. Add Income + \n 2. Remove Expense - \n 3. Zakat \n 4. Taxes" << endl;
 			cin >> finance_choice;
 			if (finance_choice == 1)
 			{
-				cout << "How much more money you got this month?\n";
+				cout << "How much more money did you earn this month?\n";
 				cin >> add_finance;
 				total = salary + add_finance;
 				cout << "Your Total for this month is " << total << " Wohoo!\n"
 					 << endl;
-
 				goto rep;
 			}
 			else if (finance_choice == 2)
 			{
-				cout << "How much more money you lost this month?\n";
+				cout << "How much money did you spend this month?\n";
 				cin >> sub_finance;
 				total = salary - sub_finance;
 				cout << "Your Total for this month is " << total << " :(\n";
@@ -64,13 +57,12 @@ pass:
 			}
 			else if (finance_choice == 3)
 			{
-				cout << "\n\nAmount of zakat you have to give from your salary is: " << 2.5 / 100 * salary << "\n\n"
+				cout << "\nAmount of zakat you have to give from your salary is: " << 2.5 / 100 * salary << "\n\n"
 					 << endl;
 				goto rep;
 			}
 			else if (finance_choice == 4)
 			{
-
 				tax = salary * 12;
 				if (tax <= 1200000)
 				{
@@ -92,24 +84,26 @@ pass:
 		else if (choice == 2)
 		{
 			cout << "You Chose Notes/Journal Press 1-2" << endl;
-			cout << "1.Notes \n2.Journal \n3.See Notes" << endl;
+			cout << "1. Notes \n2. Journal \n3. See Notes" << endl;
 			cin >> sec_choice;
 			if (sec_choice == 1)
 			{
 				cout << "Enter Your Note below: \n";
-				cin >> note;
+				cin.ignore(); // Clear the input buffer
+				getline(cin, note);
 				goto rep;
 			}
 			else if (sec_choice == 2)
 			{
 				cout << "Enter your personal journal below: \n"
 					 << endl;
-				cin >> journal;
+				cin.ignore(); // Clear the input buffer
+				getline(cin, journal);
 				goto rep;
 			}
 			else if (sec_choice == 3)
 			{
-				cout << "See your notes:" << notes << endl;
+				cout << "See your notes: " << notes << endl;
 				notes = "Contrary to popular belief, Lorem Ipsum is not simply random text. It has roots in a piece of classical Latin literature (The Extremes of Good and Evil) by Cicero, written in 45 BC. This book is a treatise on the theory of ethics, very popular during the Renaissance. The first line of Lorem Ipsum, ";
 				cout << notes << "\n"
 					 << endl;
@@ -119,16 +113,16 @@ pass:
 			}
 			else
 			{
-				cout << "Invalid choice!";
+				cout << "Invalid choice!" << endl;
 			}
 			goto rep;
 		}
 		else if (choice == 3)
 		{
 			cout << "Welcome " << user << endl;
-			cout << "I am your assitant. Please let me know your thoughts." << endl;
-			cout << "Please note that there are some limitaions according to this conversation." << endl;
-			cout << "a. I will tell you about myself. b. I can convince you if you're emotions are down. " << endl;
+			cout << "I am your assistant. Please let me know your thoughts." << endl;
+			cout << "Please note that there are some limitations according to this conversation." << endl;
+			cout << "a. I will tell you about myself. b. I can console you if your emotions are down." << endl;
 			cin >> conversation;
 			if (conversation == 'a')
 			{
@@ -154,7 +148,8 @@ pass:
 				{
 					string whyHappy, response, yourResponse;
 					cout << "That's great to hear! What's making you feel happy today?" << endl;
-					cin >> whyHappy;
+					cin.ignore(); // Clear the input buffer
+					getline(cin, whyHappy);
 					cout << "That's a great accomplishment! Would you like to hear my thoughts?" << endl;
 					cin >> response;
 					cout << "Feeling happy has many benefits, including better physical and mental health, improved relationships, increased productivity, and enjoyment of life." << endl;
@@ -177,7 +172,7 @@ pass:
 		cal:
 			cout << "Enter two numbers: ";
 			cin >> num1 >> num2;
-			cout << "Choose one of these operators to perform calculations(+,-,*,/,%): " << endl;
+			cout << "Choose one of these operators to perform calculations (+, -, *, /, %): " << endl;
 			cin >> op;
 			switch (op)
 			{
@@ -197,14 +192,21 @@ pass:
 				break;
 
 			case '/':
-				cout << "You have selected division." << endl;
-				cout << "The quotient is: " << num1 / num2 << endl;
+				if (num2 == 0)
+				{
+					cout << "Division by zero is not allowed." << endl;
+				}
+				else
+				{
+					cout << "You have selected division." << endl;
+					cout << "The quotient is: " << num1 / num2 << endl;
+				}
 				break;
 			default:
-				cout << "Invalid operator!";
+				cout << "Invalid operator!" << endl;
 			}
 			cout << endl;
-			cout << "Do you want to continue? Type(yes) if you want to: ";
+			cout << "Do you want to continue? Type 'yes' if you want to: ";
 			cin >> yes;
 			cout << endl;
 			if (yes == "yes")
@@ -220,7 +222,7 @@ pass:
 		meetingReminder:
 			string meetingWeekDay;
 			int meetingHour;
-			cout << "\n\n=> Do you forget or miss you meeting on time?" << endl;
+			cout << "\n\n=> Do you forget or miss your meeting on time?" << endl;
 			cout << "Don't Worry! I am here to remind you. \n"
 				 << endl;
 			cout << "Just enter your meeting week day and hour below:\n"
@@ -232,7 +234,6 @@ pass:
 			// meeting on weekend
 			if (meetingWeekDay == "sunday" || meetingWeekDay == "saturday")
 			{
-
 				cout << "\nYou don't have a meeting today, rest!\n\n"
 					 << endl;
 			}
@@ -275,39 +276,45 @@ pass:
 		else if (choice == 6)
 		{
 			int temperature;
-			cout << "\n\nWant to know what's the weather today? \n" << endl;
+			cout << "\n\nWant to know what's the weather today? \n"
+				 << endl;
 			cout << "Just type in the temperature: \n";
 			cin >> temperature;
 			if (temperature >= 30)
 			{
-				cout << "\nIt is going to be hot today!\n" << endl;
+				cout << "\nIt is going to be hot today!\n"
+					 << endl;
 				goto rep;
 			}
 			else if (temperature >= 20 && temperature <= 29)
 			{
-				cout << "\nIt is going to be warm today! Enjoy.\n" << endl;
+				cout << "\nIt is going to be warm today! Enjoy.\n"
+					 << endl;
 				goto rep;
 			}
 			else if (temperature >= 10 && temperature <= 18)
 			{
-				cout << "\nIt is going to be cold today! Stay warm.\n" << endl;
+				cout << "\nIt is going to be cold today! Stay warm.\n"
+					 << endl;
 				goto rep;
 			}
 			else if (temperature < 10)
 			{
-				cout << "\nIt is going to be freezing. Chance of snowfall.\n" << endl;
+				cout << "\nIt is going to be freezing. Chance of snowfall.\n"
+					 << endl;
 				goto rep;
 			}
 			else
 			{
-				cout << "\nPlease enter the correct temperature.\n" << endl;
+				cout << "\nPlease enter the correct temperature.\n"
+					 << endl;
 				goto rep;
 			}
 		}
 	}
 	else
 	{
-		cout << "please Try Again\n";
+		cout << "Please Try Again\n";
 		goto pass;
 	}
 
