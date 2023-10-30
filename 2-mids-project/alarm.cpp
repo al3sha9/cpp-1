@@ -71,12 +71,12 @@ public:
                      << ">>> Press Ctrl+C to stop the alarm <<<" << endl;
                 while (true)
                 {
-                    cout << '\a'; // Produce a beep sound using the BEL character
-                    sleep(1);     // Sleep for 1 second
+                    cout << '\a';
+                    sleep(1);
                 }
             }
 
-            sleep(1); // Sleep for 1 second
+            sleep(1);
         }
     }
 };
