@@ -6,57 +6,101 @@ using namespace std;
 
 const int MAX_TASKS = 100; // Maximum number of tasks
 
-// Function to save tasks to a file
-void saveTasksToFile(const string tasks[], int taskCount)
+class TaskList
 {
-    ofstream file("todo.txt");
-
-    if (file.is_open())
-    {
-        for (int i = 0; i < taskCount; i++)
-        {
-            file << tasks[i] << endl;
-        }
-        file.close();
-    }
-    else
-    {
-        cerr << "Error: Could not open the file for writing." << endl;
-    }
-}
-
-// Function to load tasks from a file
-int loadTasksFromFile(string tasks[])
-{
-    int taskCount = 0;
-    string task;
-    ifstream file("todo.txt");
-
-    if (file.is_open())
-    {
-        while (getline(file, task) && taskCount < MAX_TASKS)
-        {
-            tasks[taskCount] = task;
-            taskCount++;
-        }
-        file.close();
-    }
-
-    return taskCount;
-}
-
-int main()
-{
+private:
     string tasks[MAX_TASKS];
-    int taskCount = loadTasksFromFile(tasks);
+    int taskCount;
 
-    while (true)
+public:
+    TaskList() : taskCount(0)
+    {
+        loadTasksFromFile();
+    }
+
+    ~TaskList()
+    {
+        saveTasksToFile();
+    }
+
+    void displayTasks()
     {
         cout << "To-Do List:" << endl;
         for (int i = 0; i < taskCount; i++)
         {
             cout << i + 1 << ". " << tasks[i] << endl;
         }
+    }
+
+    void addTask(const string &task)
+    {
+        if (taskCount < MAX_TASKS)
+        {
+            tasks[taskCount] = task;
+            taskCount++;
+        }
+        else
+        {
+            cerr << "Error: Task limit reached." << endl;
+        }
+    }
+
+    void markTaskAsCompleted(int taskIndex)
+    {
+        if (taskIndex >= 1 && taskIndex <= taskCount)
+        {
+            // Mark the task as completed (implement your logic here)
+        }
+        else
+        {
+            cerr << "Error: Invalid task number." << endl;
+        }
+    }
+
+private:
+    void saveTasksToFile()
+    {
+        ofstream file("todo.txt");
+
+        if (file.is_open())
+        {
+            for (int i = 0; i < taskCount; i++)
+            {
+                file << tasks[i] << endl;
+            }
+            file.close();
+        }
+        else
+        {
+            cerr << "Error: Could not open the file for writing." << endl;
+        }
+    }
+
+    void loadTasksFromFile()
+    {
+        string task;
+        ifstream file("todo.txt");
+
+        if (file.is_open())
+        {
+            while (getline(file, task) && taskCount < MAX_TASKS)
+            {
+                tasks[taskCount] = task;
+                taskCount++;
+            }
+            file.close();
+        }
+    }
+};
+
+int main()
+{
+    TaskList taskList;
+    string task; // Move the declaration outside of the switch
+
+    while (true)
+    {
+        taskList.displayTasks();
 
         cout << "\nOptions:\n";
         cout << "1. Add Task\n";
@@ -71,35 +115,19 @@ int main()
         switch (choice)
         {
         case 1:
-            if (taskCount < MAX_TASKS)
-            {
-                cout << "Enter the task: ";
-                getline(cin, tasks[taskCount]);
-                taskCount++;
-            }
-            else
-            {
-                cerr << "Error: Task limit reached." << endl;
-            }
+            cout << "Enter the task: ";
+            getline(cin, task);
+            taskList.addTask(task);
             break;
 
         case 2:
             int taskIndex;
             cout << "Enter the task number to mark as completed: ";
             cin >> taskIndex;
-
-            if (taskIndex >= 1 && taskIndex <= taskCount)
-            {
-                // Mark the task as completed (you can implement your logic here)
-            }
-            else
-            {
-                cerr << "Error: Invalid task number." << endl;
-            }
+            taskList.markTaskAsCompleted(taskIndex);
             break;
 
         case 3:
-            saveTasksToFile(tasks, taskCount);
             return 0;
 
         default:

@@ -4,9 +4,34 @@
 
 using namespace std;
 
+class Stopwatch
+{
+private:
+    time_t startTime;
+    time_t stopTime;
+
+public:
+    void start()
+    {
+        startTime = time(nullptr);
+        cout << "Stopwatch started. Press 's' to stop." << endl;
+    }
+
+    void stop()
+    {
+        stopTime = time(nullptr);
+        cout<<"\a";
+        cout << "Stopwatch stopped." << endl;
+    }
+
+    double getElapsedSeconds()
+    {
+        return difftime(stopTime, startTime);
+    }
+};
+
 int main()
 {
-    time_t startTime, stopTime;
     char action;
 
     do
@@ -16,20 +41,19 @@ int main()
 
         if (action == 's')
         {
-            startTime = time(nullptr);
-            cout << "Stopwatch started. Press 's' to stop." << endl;
+            Stopwatch stopwatch;
+            stopwatch.start();
+
             while (cin >> action)
             {
                 if (action == 's')
                 {
-                    stopTime = time(nullptr);
-                    cout << "Stopwatch stopped." << endl;
+                    stopwatch.stop();
                     break;
                 }
             }
 
-            double elapsedSeconds = difftime(stopTime, startTime);
-            cout << "Elapsed time: " << elapsedSeconds << " seconds" << endl;
+            cout << "Elapsed time: " << stopwatch.getElapsedSeconds() << " seconds" << endl;
         }
     } while (action != 'q');
 
