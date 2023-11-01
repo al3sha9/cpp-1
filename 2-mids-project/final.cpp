@@ -105,12 +105,18 @@ class TaskList
 {
 private:
     string tasks[100];
+    bool taskCompleted[100]; // Array to track completion status
     int taskCount;
 
 public:
     TaskList() : taskCount(0)
     {
         loadTasksFromFile();
+        // Initialize all tasks as not completed
+        for (int i = 0; i < 100; i++)
+        {
+            taskCompleted[i] = false;
+        }
     }
 
     ~TaskList()
@@ -123,7 +129,7 @@ public:
         cout << "To-Do List:" << endl;
         for (int i = 0; i < taskCount; i++)
         {
-            cout << i + 1 << ". " << tasks[i] << endl;
+            cout << i + 1 << ". " << (taskCompleted[i] ? "[X] " : "[ ] ") << tasks[i] << endl;
         }
     }
 
@@ -133,6 +139,7 @@ public:
         {
             tasks[taskCount] = task;
             taskCount++;
+            taskCompleted[taskCount - 1] = false; // Set the new task as not completed
         }
         else
         {
@@ -144,7 +151,17 @@ public:
     {
         if (taskIndex >= 1 && taskIndex <= taskCount)
         {
-            // Mark the task as completed (implement your logic here)
+            // Adjust the task index to match the array index (subtract 1)
+            int index = taskIndex - 1;
+            if (!taskCompleted[index]) // Check if the task is not already completed
+            {
+                taskCompleted[index] = true; // Mark the task as completed
+                cout << "Task " << taskIndex << " marked as completed." << endl;
+            }
+            else
+            {
+                cout << "Task " << taskIndex << " is already completed." << endl;
+            }
         }
         else
         {
@@ -173,14 +190,15 @@ private:
 
     void loadTasksFromFile()
     {
-        string task;
         ifstream file("todo.txt");
 
         if (file.is_open())
         {
+            string task;
             while (getline(file, task) && taskCount < 100)
             {
                 tasks[taskCount] = task;
+                taskCompleted[taskCount] = false; // Initialize all loaded tasks as not completed
                 taskCount++;
             }
             file.close();
