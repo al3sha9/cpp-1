@@ -10,6 +10,91 @@ using namespace std;
 
 const string NOTES_FILE = "notes.txt";
 
+class Alarm
+{
+private:
+    int alarmHour;
+    int alarmMinute;
+    int alarmSecond;
+    int remainingSeconds;
+
+public:
+    Alarm()
+    {
+        alarmHour = 0;
+        alarmMinute = 0;
+        alarmSecond = 0;
+        remainingSeconds = 0;
+    }
+
+    void setAlarmTime(int hour, int minute, int second)
+    {
+        alarmHour = hour;
+        alarmMinute = minute;
+        alarmSecond = second;
+    }
+
+    void getTime()
+    {
+        cout << "Enter Alarm Time in 24-hour format [HH:MM:SS]: ";
+        cin >> alarmHour;
+        cin.ignore(); // Ignore the ':' character
+        cin >> alarmMinute;
+        cin.ignore(); // Ignore the ':' character
+        cin >> alarmSecond;
+    }
+
+    void timeDifference()
+    {
+        int currentHour, currentMinute, currentSecond;
+        cout << "Enter Current Time in 24-hour format [HH:MM:SS]: ";
+        cin >> currentHour;
+        cin.ignore(); // Ignore the ':' character
+        cin >> currentMinute;
+        cin.ignore(); // Ignore the ':' character
+        cin >> currentSecond;
+
+        // Calculate the remaining time in seconds
+        remainingSeconds = (alarmHour - currentHour) * 3600 +
+                           (alarmMinute - currentMinute) * 60 +
+                           (alarmSecond - currentSecond);
+
+        if (remainingSeconds < 0)
+        {
+            remainingSeconds += 86400; // Add a day's worth of seconds (24 hours)
+        }
+    }
+
+    void startAlarm()
+    {
+        while (remainingSeconds > 0)
+        {
+            int hours = remainingSeconds / 3600;
+            int minutes = (remainingSeconds % 3600) / 60;
+            int seconds = remainingSeconds % 60;
+
+            cout << "TIME REMAINING: " << hours << ":" << minutes << ":" << seconds << endl;
+            remainingSeconds--;
+            // Simulate a one-second delay (not precise)
+            for (int i = 0; i < 100000000; i++)
+            {
+                // Delay loop
+            }
+
+            // Check if the alarm time has been reached
+            if (remainingSeconds == 0)
+            {
+                cout << "ALARM TIME REACHED" << endl;
+                cout << '\a'; // Produce a beep sound
+
+                // You can choose to return to the main menu here
+                // For example, you can add a return statement or set a flag to exit the alarm mode.
+                return;
+            }
+        }
+    }
+};
+
 class Calendar
 {
 public:
@@ -206,81 +291,6 @@ private:
     }
 };
 
-class Alarm
-{
-public:
-    tm alarmTime, presentTime, differenceInTime;
-
-    Alarm()
-    {
-        time_t now = time(0);
-        presentTime = *localtime(&now);
-        alarmTime = presentTime;
-        alarmTime.tm_sec = 0;
-    }
-
-    void getTime()
-    {
-        string time;
-        cout << "Enter Alarm Time in 24-hour format [HH:MM]: ";
-        cin >> time;
-
-        int pos = 0, h;
-        while ((pos = time.find(':')) != string::npos)
-        {
-            string token = time.substr(0, pos);
-            stringstream convert(token);
-            convert >> alarmTime.tm_hour;
-            time.erase(0, pos + 1);
-        }
-
-        stringstream convert(time);
-        convert >> alarmTime.tm_min;
-    }
-
-    void timeDifference()
-    {
-        time_t now = time(0);
-        int sec = difftime(mktime(&alarmTime), now);
-        differenceInTime.tm_min = sec / 60;
-        differenceInTime.tm_hour = differenceInTime.tm_min / 60;
-        differenceInTime.tm_min = differenceInTime.tm_min % 60;
-        differenceInTime.tm_sec = sec % 60;
-
-        if (sec < 0)
-        {
-            differenceInTime.tm_hour = 24 + differenceInTime.tm_hour - 1;
-            differenceInTime.tm_min = 0 - differenceInTime.tm_min;
-            differenceInTime.tm_sec = 0 - differenceInTime.tm_sec;
-        }
-    }
-
-    void startAlarm()
-    {
-        while (true)
-        {
-            system("clear"); // Clear the console on Linux
-            time_t now = time(0);
-            presentTime = *localtime(&now);
-            timeDifference();
-            cout << "TIME REMAINING: " << differenceInTime.tm_hour << ":" << differenceInTime.tm_min << ":" << differenceInTime.tm_sec << endl;
-
-            if (differenceInTime.tm_hour == 0 && differenceInTime.tm_min == 0 && differenceInTime.tm_sec == 0)
-            {
-                cout << "Time Ended" << endl
-                     << ">>> Press Ctrl+C to stop the alarm <<<" << endl;
-                while (true)
-                {
-                    cout << '\a';
-                    sleep(1);
-                }
-            }
-
-            sleep(1);
-        }
-    }
-};
-
 class Note
 {
 public:
@@ -454,14 +464,15 @@ private:
 int main()
 {
     int choice;
+
     while (true)
     {
         cout << "Welcome to the Dashboard!" << endl;
         cout << "1. Calendar" << endl;
         cout << "2. Stopwatch" << endl;
         cout << "3. Task List" << endl;
-        cout << "4. Alarm" << endl;
-        cout << "5. Note Taking App" << endl;
+        cout << "4. Note Taking App" << endl;
+        cout << "5. Alarm Clock" << endl;
         cout << "6. Exit" << endl;
         cout << "Enter your choice: ";
         cin >> choice;
@@ -518,12 +529,12 @@ int main()
                 cout << "2. Mark Task as Completed\n";
                 cout << "3. Quit\n";
 
-                int choice;
+                int taskChoice;
                 cout << "Enter your choice: ";
-                cin >> choice;
+                cin >> taskChoice;
                 cin.ignore();
 
-                switch (choice)
+                switch (taskChoice)
                 {
                 case 1:
                     cout << "Enter the task: ";
@@ -546,13 +557,6 @@ int main()
             break;
         }
         case 4:
-        {
-            Alarm alarm;
-            alarm.getTime();
-            alarm.startAlarm();
-            break;
-        }
-        case 5:
         {
             NoteTakingApp app;
 
@@ -584,7 +588,14 @@ int main()
                     cout << "Invalid choice. Please try again." << endl;
                 }
             } while (choice != 4);
-
+            break;
+        }
+        case 5: // Alarm Clock
+        {
+            Alarm myAlarm;
+            myAlarm.getTime();
+            myAlarm.timeDifference();
+            myAlarm.startAlarm();
             break;
         }
         case 6:
