@@ -1,10 +1,7 @@
 #include <iostream>
 #include <ctime>
-#include <cstdlib>
 #include <fstream>
 #include <string>
-#include <sstream>
-#include <unistd.h>
 
 using namespace std;
 
@@ -291,56 +288,46 @@ private:
     }
 };
 
-class Note
-{
-public:
-    Note() : title(""), content("") {}
-
-    void createNote()
-    {
-        cout << "Enter note title: ";
-        cin.ignore();
-        getline(cin, title);
-        cout << "Enter note content: ";
-        getline(cin, content);
-    }
-
-    void displayNote()
-    {
-        cout << "Title: " << title << endl;
-        cout << "Content: " << content << endl;
-    }
-
-    const string &getTitle() const
-    {
-        return title;
-    }
-
-    const string &getContent() const
-    {
-        return content;
-    }
-
-    bool isEmpty() const
-    {
-        return title.empty() && content.empty();
-    }
-
-    void deleteNote()
-    {
-        title = "";
-        content = "";
-    }
-
-private:
-    string title;
-    string content;
-};
-
 class NoteTakingApp
 {
+private:
+    struct Note
+    {
+        string title;
+        string content;
+
+        void createNote()
+        {
+            cout << "Enter note title: ";
+            cin.ignore();
+            getline(cin, title);
+            cout << "Enter note content: ";
+            getline(cin, content);
+        }
+
+        void displayNote()
+        {
+            cout << "Title: " << title << endl;
+            cout << "Content: " << content << endl;
+        }
+
+        bool isEmpty()
+        {
+            return title.empty() && content.empty();
+        }
+
+        void deleteNote()
+        {
+            title.clear();
+            content.clear();
+        }
+    };
+
+    Note notes[100];
+    int noteCount;
+
 public:
-    NoteTakingApp()
+    NoteTakingApp() : noteCount(0)
     {
         loadNotes();
     }
@@ -398,7 +385,7 @@ public:
 
         for (int i = 0; i < noteCount; i++)
         {
-            if (notes[i].getTitle() == title)
+            if (notes[i].title == title)
             {
                 notes[i].deleteNote();
                 cout << "Note deleted successfully!" << endl;
@@ -410,9 +397,6 @@ public:
     }
 
 private:
-    Note notes[100];
-    int noteCount = 0;
-
     void loadNotes()
     {
         ifstream inFile(NOTES_FILE);
@@ -430,8 +414,8 @@ private:
 
             if (!title.empty() && !content.empty())
             {
-                notes[noteCount] = Note();
-                notes[noteCount].createNote();
+                notes[noteCount].title = title;
+                notes[noteCount].content = content;
                 noteCount++;
             }
         }
@@ -452,8 +436,8 @@ private:
         {
             if (!notes[i].isEmpty())
             {
-                outFile << notes[i].getTitle() << endl;
-                outFile << notes[i].getContent() << endl;
+                outFile << notes[i].title << endl;
+                outFile << notes[i].content << endl;
             }
         }
 
@@ -516,6 +500,7 @@ int main()
             break;
         }
         case 3:
+        
         {
             TaskList taskList;
             string task;
