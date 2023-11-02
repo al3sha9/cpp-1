@@ -4,19 +4,24 @@
 
 using namespace std;
 
-const int MAX_NOTES = 100;
+//global variables
+const int MAX_NOTES = 100; 
 const string NOTES_FILE = "notes.txt";
 
 class Note {
-public:
-    Note() : title(""), content("") {}
+    private:
+    string title;
+    string content;
+
+    public:
+    Note() : title(""), content("") {} //initialized by empty string
 
     void createNote() {
         cout << "Enter note title: ";
         cin.ignore();
         getline(cin, title);
         cout << "Enter note content: ";
-        getline(cin, content);
+        getline(cin, content); //getline()=>read a whole line of text, including spaces, and store it in a variable.
     }
 
     void displayNote() {
@@ -28,7 +33,7 @@ public:
         return title;
     }
 
-    const string& getContent() const {
+    const string& getContent() const { //the first const makes sure you can't change the returned string, and the second const makes sure the function won't change the object it's called on.
         return content;
     }
 
@@ -41,9 +46,7 @@ public:
         content = "";
     }
 
-private:
-    string title;
-    string content;
+
 };
 
 class NoteTakingApp {
