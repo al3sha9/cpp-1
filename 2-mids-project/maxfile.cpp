@@ -1,10 +1,10 @@
 #include <iostream>
-#include <ctime>
 #include <fstream>
 #include <string>
 
 using namespace std;
 
+const string USER_FILE = "users.txt";
 const string NOTES_FILE = "notes.txt";
 
 class Alarm
@@ -437,13 +437,103 @@ private:
     }
 };
 
+class User
+{
+public:
+    string username;
+    string password;
+
+    User() {}
+
+    User(const string &uname, const string &pword)
+    {
+        username = uname;
+        password = pword;
+    }
+
+    void saveUser() const
+    {
+        ofstream userFile(USER_FILE, ios::app);
+        if (userFile.is_open())
+        {
+            userFile << username << " " << password << endl;
+            userFile.close();
+            cout << "User registered successfully!" << endl;
+        }
+        else
+        {
+            cout << "Error: Could not open the user file for writing." << endl;
+        }
+    }
+
+    static bool isUserRegistered(const string &username, const string &password)
+    {
+        ifstream userFile(USER_FILE);
+        string uname, pword;
+        while (userFile >> uname >> pword)
+        {
+            if (uname == username && pword == password)
+            {
+                userFile.close();
+                return true;
+            }
+        }
+        userFile.close();
+        return false;
+    }
+};
+
 int main()
 {
     int choice;
+    bool loggedIn = false;
 
-    while (true)
+    while (!loggedIn)
     {
         cout << "Welcome to the Dashboard!" << endl;
+        cout << "1. Login" << endl;
+        cout << "2. Signup" << endl;
+        cout << "Enter your choice: ";
+        cin >> choice;
+
+        if (choice == 1)
+        {
+            string username, password;
+            cout << "Enter your username: ";
+            cin >> username;
+            cout << "Enter your password: ";
+            cin >> password;
+
+            if (User::isUserRegistered(username, password))
+            {
+                cout << "Login successful!" << endl;
+                loggedIn = true;
+            }
+            else
+            {
+                cout << "Login failed. Incorrect username or password. Please try again." << endl;
+            }
+        }
+        else if (choice == 2)
+        {
+            string newUsername, newPassword;
+            cout << "Enter a new username: ";
+            cin >> newUsername;
+            cout << "Enter a new password: ";
+            cin >> newPassword;
+            User newUser(newUsername, newPassword);
+            newUser.saveUser();
+            cout << "User registered successfully!" << endl;
+        }
+        else
+        {
+            cout << "Invalid choice. Please try again." << endl;
+        }
+    }
+
+    while (loggedIn)
+    {
+        cout << "What would you like to do?" << endl;
         cout << "1. Calendar" << endl;
         cout << "2. Stopwatch" << endl;
         cout << "3. Task List" << endl;
@@ -452,7 +542,6 @@ int main()
         cout << "6. Exit" << endl;
         cout << "Enter your choice: ";
         cin >> choice;
-
         switch (choice)
         {
         case 1:
@@ -492,7 +581,6 @@ int main()
             break;
         }
         case 3:
-
         {
             TaskList taskList;
             string task;
