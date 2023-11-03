@@ -33,7 +33,8 @@ public:
 
     void getTime()
     {
-        cout << "Enter Alarm Time in 24-hour format [HH:MM:SS]: ";
+        cout << "\n_________________________\n";
+        cout << "\nEnter Alarm Time in 24-hour format [HH:MM:SS]: ";
         cin >> alarmHour;
         cin.ignore();
         cin >> alarmMinute;
@@ -44,7 +45,7 @@ public:
     void timeDifference()
     {
         int currentHour, currentMinute, currentSecond;
-        cout << "Enter Current Time in 24-hour format [HH:MM:SS]: ";
+        cout << "\nEnter Current Time in 24-hour format [HH:MM:SS]: ";
         cin >> currentHour;
         cin.ignore();
         cin >> currentMinute;
@@ -68,7 +69,7 @@ public:
             int hours = remainingSeconds / 3600;
             int minutes = (remainingSeconds % 3600) / 60;
             int seconds = remainingSeconds % 60;
-
+            cout << endl;
             cout << "TIME REMAINING: " << hours << ":" << minutes << ":" << seconds << endl;
             remainingSeconds--;
 
@@ -78,102 +79,12 @@ public:
 
             if (remainingSeconds == 0)
             {
-                cout << "ALARM TIME REACHED" << endl;
+                cout << "\n_________________________\n";
+                cout << "\nALARM TIME REACHED" << endl;
                 cout << '\a';
                 return;
             }
         }
-    }
-};
-
-class Calendar
-{
-    tm currentDate;
-    int year;
-    int month;
-    int day;
-    int daysInMonth;
-    int startingDay;
-
-public:
-    Calendar()
-    {
-        time_t now = time(0);
-        currentDate = *localtime(&now);
-        year = 1900 + currentDate.tm_year;
-        month = 1 + currentDate.tm_mon;
-        day = currentDate.tm_mday;
-    }
-
-    void displayCurrentMonthCalendar()
-    {
-        daysInMonth = getDaysInMonth(year, month);
-        calculateFirstDay();
-
-        cout << "\t\t  " << year << " - " << month << "   \n";
-        cout << " Su  Mo  Tu  We  Th  Fr  Sa\n";
-
-        for (int i = 0; i < startingDay; i++)
-        {
-            cout << "    ";
-        }
-
-        for (int i = 1; i <= daysInMonth; i++)
-        {
-            if (i < 10)
-                cout << " ";
-            if (i == day)
-                cout << "[" << i << "]";
-            else
-                cout << " " << i << " ";
-            if ((i + startingDay) % 7 == 0 || i == daysInMonth)
-                cout << endl;
-        }
-    }
-
-private:
-    int getDaysInMonth(int year, int month)
-    {
-        const int daysInMonth[] = {0, 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
-        int days = daysInMonth[month];
-        if (month == 2 && ((year % 4 == 0 && year % 100 != 0) || (year % 400 == 0)))
-        {
-            days = 29;
-        }
-        return days;
-    }
-
-    void calculateFirstDay()
-    {
-        tm firstDay = {0, 0, 0, 1, month - 1, year - 1900};
-        mktime(&firstDay);
-        startingDay = firstDay.tm_wday;
-    }
-};
-
-class Stopwatch
-{
-private:
-    time_t startTime;
-    time_t stopTime;
-
-public:
-    void start()
-    {
-        startTime = time(nullptr);
-        cout << "Stopwatch started. Press 's' to stop." << endl;
-    }
-
-    void stop()
-    {
-        stopTime = time(nullptr);
-        cout << "\a";
-        cout << "Stopwatch stopped." << endl;
-    }
-
-    double getElapsedSeconds()
-    {
-        return difftime(stopTime, startTime);
     }
 };
 
@@ -201,7 +112,9 @@ public:
 
     void displayTasks()
     {
-        cout << "To-Do List:" << endl;
+        cout << "\n_________________________\n";
+
+        cout << "\nTo-Do List:" << endl;
         for (int i = 0; i < taskCount; i++)
         {
             cout << i + 1 << ". " << (taskCompleted[i] ? "[X] " : "[ ] ") << tasks[i] << endl;
@@ -290,17 +203,17 @@ private:
 
         void createNote()
         {
-            cout << "Enter note title: ";
+            cout << "\nEnter note title: ";
             cin.ignore();
             getline(cin, title);
-            cout << "Enter note content: ";
+            cout << "\nEnter note content: ";
             getline(cin, content);
         }
 
         void displayNote()
         {
-            cout << "Title: " << title << endl;
-            cout << "Content: " << content << endl;
+            cout << "\n\tTitle: " << title << endl;
+            cout << "\tContent: " << content << endl;
         }
 
         bool isEmpty()
@@ -394,7 +307,10 @@ private:
         ifstream inFile(NOTES_FILE);
         if (!inFile.is_open())
         {
-            cout << "Could not open notes file. Creating a new one." << endl;
+            cout << "\n_________________________\n";
+            cout << "\nCould not open notes file. Creating a new one." << endl;
+            cout << "\n_________________________\n";
+
             return;
         }
 
@@ -443,8 +359,6 @@ public:
     string username;
     string password;
 
-    User() {}
-
     User(const string &uname, const string &pword)
     {
         username = uname;
@@ -458,7 +372,6 @@ public:
         {
             userFile << username << " " << password << endl;
             userFile.close();
-            cout << "User registered successfully!" << endl;
         }
         else
         {
@@ -483,6 +396,98 @@ public:
     }
 };
 
+class Calendar
+{
+    tm currentDate;
+    int year;
+    int month;
+    int day;
+    int daysInMonth;
+    int startingDay;
+
+public:
+    Calendar()
+    {
+        time_t now = time(0);
+        currentDate = *localtime(&now);
+        year = 1900 + currentDate.tm_year;
+        month = 1 + currentDate.tm_mon;
+        day = currentDate.tm_mday;
+    }
+
+    void displayCurrentMonthCalendar()
+    {
+        daysInMonth = getDaysInMonth(year, month);
+        calculateFirstDay();
+        cout << "\n_________________________\n";
+        cout << "\n\t\t  " << year << " - " << month << "   \n";
+        cout << " Su  Mo  Tu  We  Th  Fr  Sa\n";
+
+        for (int i = 0; i < startingDay; i++)
+        {
+            cout << "    ";
+        }
+
+        for (int i = 1; i <= daysInMonth; i++)
+        {
+            if (i < 10)
+                cout << " ";
+            if (i == day)
+                cout << "[" << i << "]";
+            else
+                cout << " " << i << " ";
+            if ((i + startingDay) % 7 == 0 || i == daysInMonth)
+                cout << endl;
+        }
+    }
+
+private:
+    int getDaysInMonth(int year, int month)
+    {
+        const int daysInMonth[] = {0, 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
+        int days = daysInMonth[month];
+        if (month == 2 && ((year % 4 == 0 && year % 100 != 0) || (year % 400 == 0)))
+        {
+            days = 29;
+        }
+        return days;
+    }
+
+    void calculateFirstDay()
+    {
+        tm firstDay = {0, 0, 0, 1, month - 1, year - 1900};
+        mktime(&firstDay);
+        startingDay = firstDay.tm_wday;
+    }
+};
+
+class Stopwatch
+{
+private:
+    time_t startTime;
+    time_t stopTime;
+
+public:
+    void start()
+    {
+        startTime = time(nullptr);
+
+        cout << "\nStopwatch started. Press 's' to stop." << endl;
+    }
+
+    void stop()
+    {
+        stopTime = time(nullptr);
+        cout << '\a';
+        cout << "Stopwatch stopped." << endl;
+    }
+
+    double getElapsedSeconds()
+    {
+        return difftime(stopTime, startTime);
+    }
+};
+
 int main()
 {
     int choice;
@@ -490,40 +495,53 @@ int main()
 
     while (!loggedIn)
     {
-        cout << "Welcome to the Dashboard!" << endl;
-        cout << "1. Login" << endl;
-        cout << "2. Signup" << endl;
-        cout << "Enter your choice: ";
+        cout << "\n\t\t\t\tWelcome to the\n"
+             << endl;
+        cout << "T)tttttt   A)aa    S)ssss  K)   kk      M)mm mmm    A)aa   N)n   nn   A)aa     G)gggg E)eeeeee R)rrrrr  " << endl;
+        cout << "   T)     A)  aa  S)    ss K)  kk      M)  mm  mm  A)  aa  N)nn  nn  A)  aa   G)      E)       R)    rr " << endl;
+        cout << "   T)    A)    aa  S)ss    K)kkk       M)  mm  mm A)    aa N) nn nn A)    aa G)  ggg  E)eeeee  R)  rrr  " << endl;
+        cout << "   T)    A)aaaaaa      S)  K)  kk      M)  mm  mm A)aaaaaa N)  nnnn A)aaaaaa G)    gg E)       R) rr    " << endl;
+        cout << "   T)    A)    aa S)    ss K)   kk     M)      mm A)    aa N)   nnn A)    aa  G)   gg E)       R)   rr  " << endl;
+        cout << "   T)    A)    aa  S)ssss  K)    kk    M)      mm A)    aa N)    nn A)    aa   G)ggg  E)eeeeee R)    rr " << endl;
+
+        cout << "\n\n_________________________" << endl;
+        cout << "\n\t1. Login" << endl;
+        cout << "\t2. Signup" << endl;
+        cout << "\tEnter your choice: " << endl;
+        cout << "\n_________________________\n";
         cin >> choice;
 
         if (choice == 1)
         {
             string username, password;
-            cout << "Enter your username: ";
+            cout << "\nEnter your username: ";
             cin >> username;
-            cout << "Enter your password: ";
+            cout << "\nEnter your password: ";
             cin >> password;
+            cout << "\n_________________________\n";
 
             if (User::isUserRegistered(username, password))
             {
-                cout << "Login successful!" << endl;
+                cout << "\nLogin successful!" << endl;
                 loggedIn = true;
             }
             else
             {
-                cout << "Login failed. Incorrect username or password. Please try again." << endl;
+                cout << "\nLogin failed. Incorrect username or password. Please try again." << endl;
             }
         }
         else if (choice == 2)
         {
             string newUsername, newPassword;
-            cout << "Enter a new username: ";
+            cout << "\n_________________________\n";
+            cout << "\nEnter a new username: ";
             cin >> newUsername;
-            cout << "Enter a new password: ";
+            cout << "\nEnter a new password: ";
             cin >> newPassword;
             User newUser(newUsername, newPassword);
             newUser.saveUser();
-            cout << "User registered successfully!" << endl;
+            cout << "\nUser registered successfully!" << endl;
+            cout << "\n_________________________\n";
         }
         else
         {
@@ -533,14 +551,15 @@ int main()
 
     while (loggedIn)
     {
-        cout << "What would you like to do?" << endl;
-        cout << "1. Calendar" << endl;
-        cout << "2. Stopwatch" << endl;
-        cout << "3. Task List" << endl;
-        cout << "4. Note Taking App" << endl;
-        cout << "5. Alarm Clock" << endl;
-        cout << "6. Exit" << endl;
-        cout << "Enter your choice: ";
+        cout << "\n<=================================>\n";
+        cout << "\nWhat would you like to do?" << endl;
+        cout << "\t1. Calendar" << endl;
+        cout << "\t2. Stopwatch" << endl;
+        cout << "\t3. Task List" << endl;
+        cout << "\t4. Note Taking App" << endl;
+        cout << "\t5. Alarm Clock" << endl;
+        cout << "\t6. Exit" << endl;
+        cout << "\tEnter your choice: ";
         cin >> choice;
         switch (choice)
         {
@@ -557,7 +576,7 @@ int main()
 
             do
             {
-                cout << "Press 's' to start the stopwatch or 'q' to quit: ";
+                cout << "\nPress 's' to start the stopwatch or 'q' to quit: ";
                 cin >> action;
 
                 if (action == 's')
@@ -573,11 +592,11 @@ int main()
                         }
                     }
 
-                    cout << "Elapsed time: " << stopwatch.getElapsedSeconds() << " seconds" << endl;
+                    cout << "\nElapsed time: " << stopwatch.getElapsedSeconds() << " seconds" << endl;
+                    cout << "\n_________________________\n";
                 }
             } while (action != 'q');
 
-            cout << "Goodbye!" << endl;
             break;
         }
         case 3:
@@ -590,25 +609,25 @@ int main()
                 taskList.displayTasks();
 
                 cout << "\nOptions:\n";
-                cout << "1. Add Task\n";
-                cout << "2. Mark Task as Completed\n";
-                cout << "3. Quit\n";
+                cout << "\t1. Add Task\n";
+                cout << "\t2. Mark Task as Completed\n";
+                cout << "\t3. Quit\n";
 
                 int taskChoice;
-                cout << "Enter your choice: ";
+                cout << "\nEnter your choice: ";
                 cin >> taskChoice;
                 cin.ignore();
 
                 switch (taskChoice)
                 {
                 case 1:
-                    cout << "Enter the task: ";
+                    cout << "\nEnter the task: ";
                     getline(cin, task);
                     taskList.addTask(task);
                     break;
                 case 2:
                     int taskIndex;
-                    cout << "Enter the task number to mark as completed: ";
+                    cout << "\nEnter the task number to mark as completed: ";
                     cin >> taskIndex;
                     taskList.markTaskAsCompleted(taskIndex);
                     break;
@@ -627,13 +646,15 @@ int main()
 
             do
             {
-                cout << "Note Taking App" << endl;
-                cout << "1. Create Note" << endl;
-                cout << "2. View Notes" << endl;
-                cout << "3. Delete Note" << endl;
-                cout << "4. Exit" << endl;
-                cout << "Enter your choice: ";
+                cout << "\n_________________________\n";
+                cout << "\nNote Taking App" << endl;
+                cout << "\t1. Create Note" << endl;
+                cout << "\t2. View Notes" << endl;
+                cout << "\t3. Delete Note" << endl;
+                cout << "\t4. Exit" << endl;
+                cout << "\tEnter your choice: ";
                 cin >> choice;
+                cout << "\n_________________________\n";
 
                 switch (choice)
                 {
@@ -647,10 +668,10 @@ int main()
                     app.deleteNote();
                     break;
                 case 4:
-                    cout << "Exiting Note Taking App." << endl;
+                    cout << "\nExiting Note Taking App." << endl;
                     break;
                 default:
-                    cout << "Invalid choice. Please try again." << endl;
+                    cout << "\nInvalid choice. Please try again." << endl;
                 }
             } while (choice != 4);
             break;
@@ -664,7 +685,12 @@ int main()
             break;
         }
         case 6:
-            cout << "Goodbye!" << endl;
+            cout << "\n\nT)tttttt H)    hh   A)aa   N)n   nn K)   kk   S)ssss  " << endl;
+            cout << "   T)    H)    hh  A)  aa  N)nn  nn K)  kk   S)    ss " << endl;
+            cout << "   T)    H)hhhhhh A)    aa N) nn nn K)kkk     S)ss    " << endl;
+            cout << "   T)    H)    hh A)aaaaaa N)  nnnn K)  kk        S)  " << endl;
+            cout << "   T)    H)    hh A)    aa N)   nnn K)   kk  S)    ss " << endl;
+            cout << "   T)    H)    hh A)    aa N)    nn K)    kk  S)ssss  " << endl;
             return 0;
         default:
             cout << "Invalid choice. Please try again." << endl;
