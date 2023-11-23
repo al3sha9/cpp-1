@@ -1,141 +1,94 @@
 #include <iostream>
-#include <conio.h>
-#include <vector>
-#include <cstdlib>
-#include <ctime>
-#include <unistd.h>
+#include <iomanip>
+#include <conio.h> 
+#include <time.h> 
 
 using namespace std;
-
-const int width = 20;
-const int height = 10;
-
-class Snake {
-public:
-    Snake();
-    void update();
-    bool isAlive() const;
-    void changeDirection(char newDirection);
-    void eatFood();
-    void display();
-private:
-    int headX, headY;
-    int tailLength;
-    vector<int> tailX, tailY;
-    char direction;
-    bool alive;
-};
-
-Snake::Snake() {
-    srand(static_cast<unsigned>(time(nullptr));
-    headX = width / 2;
-    headY = height / 2;
-    tailLength = 0;
-    direction = ' ';
-    alive = true;
-}
-
-void Snake::update() {
-    int prevX = tailX[0];
-    int prevY = tailY[0];
-    int prev2X, prev2Y;
-    tailX[0] = headX;
-    tailY[0] = headY;
+ 
+void printCalendar(int year)
+{
+	int t[] = { 0, 3, 2, 5, 0, 3, 5, 1, 4, 6, 2, 4 }; 
+	int mDays[12] = {31,28,31,30,31,30,31,31,30,31,30,31}; 
+	string monthList[] = { "January", "February", "March", "April", "May", "June", 
+                        "July", "August", "September", "October", "November", "December" }; 
+                       
     
-    for (int i = 1; i < tailLength; i++) {
-        prev2X = tailX[i];
-        prev2Y = tailY[i];
-        tailX[i] = prevX;
-        tailY[i] = prevY;
-        prevX = prev2X;
-        prevY = prev2Y;
+    cout<<"  --------------------------------"<<endl;
+    cout<<"           Calendar - "<<year<<endl;
+    cout<<"  --------------------------------"<<endl<<endl;
+    int days; 
+    int current; 
+   
+   	int y = year - 1;
+    current = ( y + y/4 - y/100 + y/400 + t[0] + 1) % 7;
+   
+    for (int i = 0; i < 12; i++) 
+    { 
+    	if( i==1 )
+			if (year % 400 == 0 || (year % 4 == 0 && year % 100 != 0)) 
+				days = 29;
+			else	
+				days = mDays[i];
+		else
+			days = mDays[i];
+     
+  		cout<<endl<<"  ------------"<<monthList[i]<<"-------------"<<endl;   
+  
+        cout<<"  Sun  Mon  Tue  Wed  Thu  Fri  Sat"<<endl; 
+  
+        int k; 
+        for (k = 0; k < current; k++) 
+            cout<<"     "; 
+  
+        for (int j = 1; j <= days; j++) 
+        {
+        	k++;
+            cout<<setw(5)<<j;
+            if (k > 6) 
+            { 
+                k = 0; 
+                cout<<endl; 
+            } 
+        } 
+        
+		if (k)
+			cout<<endl; 
+
+        current = k; 
     }
-
-    if (direction == 'w') headY--;
-    else if (direction == 's') headY++;
-    else if (direction == 'a') headX--;
-    else if (direction == 'd') headX++;
-
-    if (headX < 0 || headX >= width || headY < 0 || headY >= height)
-        alive = false;
-
-    for (int i = 0; i < tailLength; i++) {
-        if (tailX[i] == headX && tailY[i] == headY)
-            alive = false;
-    }
-}
-
-bool Snake::isAlive() const {
-    return alive;
-}
-
-void Snake::changeDirection(char newDirection) {
-    if ((newDirection == 'w' && direction != 's') ||
-        (newDirection == 's' && direction != 'w') ||
-        (newDirection == 'a' && direction != 'd') ||
-        (newDirection == 'd' && direction != 'a')) {
-        direction = newDirection;
-    }
-}
-
-void Snake::eatFood() {
-    tailLength++;
-    tailX.push_back(-1);
-    tailY.push_back(-1);
-}
-
-void Snake::display() {
-    system("clear"); // Clear the screen (for Linux)
-    
-    for (int i = 0; i < height; i++) {
-        for (int j = 0; j < width; j++) {
-            if (i == headY && j == headX)
-                cout << "O";
-            else if (i == 0 || i == height - 1 || j == 0 || j == width - 1)
-                cout << "#";
-            else {
-                bool print = false;
-                for (int k = 0; k < tailLength; k++) {
-                    if (tailX[k] == j && tailY[k] == i) {
-                        cout << "o";
-                        print = true;
-                    }
-                }
-                if (!print) cout << " ";
-            }
-        }
-        cout << endl;
-    }
+  
+    return; 
 }
 
 int main() {
-    Snake snake;
-    char input;
-    bool gameOver = false;
+	system("cls");
 
-    while (!gameOver) {
-        snake.display();
-        input = _getch(); // Use _getch() for Linux
-
-        switch (input) {
-            case 'w':
-            case 's':
-            case 'a':
-            case 'd':
-                snake.changeDirection(input);
-                break;
-            case 'q':
-                gameOver = true;
-                break;
-        }
-
-        snake.update();
-
-        if (!snake.isAlive())
-            gameOver = true;
-
-        // Add logic to generate and check for food
-    }
-
+ 	time_t ttime = time(0);
+	tm *local_time = localtime(&ttime);
+	
+	int year = 1900 + local_time->tm_year; 
+	char option;
+	
+	do{
+		system("cls");
+		printCalendar(year);
+		
+		cout<<endl<<endl;
+		cout<<"Press "<<endl;
+		cout<<"- n for next year"<<endl;
+		cout<<"- p for previous year"<<endl;
+		cout<<"- e for exit"<<endl;
+		option = getche();
+		switch(option){
+			case 'n':
+				year++;
+				break;
+			case 'p':
+				year--;
+				break;
+		}
+			
+	}while(option!='e' && option!='E');	 	
+ 	
     return 0;
 }

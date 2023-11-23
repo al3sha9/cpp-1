@@ -53,7 +53,7 @@ private:
 };
 
 int main() {
-    SimpleCalendar calendar(2023, 10, 31);
+    SimpleCalendar calendar(2023, 11, 03);
     calendar.displayCurrentMonthCalendar();
     return 0;
 }
