@@ -37,6 +37,7 @@ class Rect : public Shape{
     public:
     Rect(float len, float wid): len(len), wid(wid){
         calA();
+        // comment
     };
     void calA(){
         area = len * wid;
