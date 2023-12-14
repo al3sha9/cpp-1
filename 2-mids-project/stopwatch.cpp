@@ -20,7 +20,7 @@ public:
     void stop()
     {
         stopTime = time(nullptr);
-        cout<<"\a";
+        cout << "\a";
         cout << "Stopwatch stopped." << endl;
     }
 
