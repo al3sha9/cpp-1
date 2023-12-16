@@ -8,8 +8,8 @@
       "args": [],
       "stopAtEntry": false,
       "externalConsole": false,
-      "cwd": "/home/fazi/Desktop/cpp-1",
-      "program": "/home/fazi/Desktop/cpp-1/build/Debug/outDebug",
+      "cwd": "/home/fazi/Desktop/cpp-1/lab tasks/lab/lab task file handing",
+      "program": "/home/fazi/Desktop/cpp-1/lab tasks/lab/lab task file handing/build/Debug/outDebug",
       "MIMode": "gdb",
       "miDebuggerPath": "gdb",
       "setupCommands": [
