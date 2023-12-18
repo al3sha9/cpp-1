@@ -1,9 +1,3 @@
-/*
-Inventory Management System: Build an inventory management system that 
-stores product details (name, quantity, price) in a file.
-Allow users to 
-add new products, update quantities, and display the inventory.
-*/
 #include<iostream>
 #include<string>
 #include<fstream>
@@ -25,6 +19,7 @@ class ProductDetails{
         }
         else{
             cout<<"Enter the name of the products along with the quantities and price:"<<endl;
+            cout<<endl;
             cout<<"Product: ";
             cin>>name;
             file4<<name<<endl;
@@ -37,26 +32,36 @@ class ProductDetails{
 
             cout<<"The products are successfully stored in the file4. Check it out!"<<endl;
         }
+        file4.close();
     }
-    void update_quantities(){
-        char yn;
-        cout<<"Do you have more quantities available? (y/n)";
-        cin>>yn;
-        if(yn == 'n'){
-            cout<<"OK quit!"<<endl;
+    void update_quantities() {
+    char yn;
+    cout << "Do you have more quantities available? (y/n)";
+    cin >> yn;
+
+    if (yn == 'n') {
+        cout << "OK quit!" << endl;
+    } else {
+        int quantity = 0;
+
+        cout << "Enter the quantity: ";
+        cin >> quantity;
+
+        fstream file4("file4.txt", ios::in | ios::out);
+
+        if (!file4) {
+            cout << "Error opening file!" << endl;
+            return;
         }
-        else{
-             int latestQuantity = 0;
-             quantity = latestQuantity;
-             file4.open("file4.txt", ios::out | ios::in);
-             cout<<"Enter the quantity: ";
-             cin>>latestQuantity;
-             file4<<latestQuantity;
-             cout<<"Updated successfully!"<<endl;
-             file4>>latestQuantity;
-             cout<<latestQuantity<<endl;
-        }
+
+        file4 << quantity;
+
+        cout << "Updated successfully!" << endl;
+        cout<<quantity<<endl;
+
+        file4.close();
     }
+}
     void display_inventory(){
         cout<<"The products: "<<endl;
         file4.open("file4.txt", ios::in);
@@ -64,6 +69,7 @@ class ProductDetails{
         cout<<name<<endl;
         cout<<quantity<<endl;
         cout<<price<<endl;
+        file4.close();
     }
 };
 int main(){
