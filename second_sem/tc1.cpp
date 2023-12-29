@@ -32,13 +32,13 @@ public:
     {
         if (divisor == 0)
         {
-            throw DivideByZeroException(); // Throw the exception
+            throw DivideByZeroException();
         }
         else if (divident < 0)
         {
-            throw NegativeDividendException(); // Throw the DivideByZeroException
+            throw NegativeDividendException();
         }
-        return (double)divisor / divident; // Ensure correct division
+        return (double)divisor / divident;
     }
 };
 
@@ -58,7 +58,7 @@ int main()
     }
     catch (const DivideByZeroException &err)
     {
-        cerr << err.what() << endl; // Print the error message
+        cerr << err.what() << endl;
     }
     catch (const NegativeDividendException &err)
     {
