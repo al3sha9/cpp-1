@@ -23,9 +23,9 @@ public:
     {
         if (divisor == 0)
         {
-            throw DivideByZeroException(); // Throw the exception
+            throw DivideByZeroException();
         }
-        return (double)divisor / divident; // Ensure correct division
+        return (double)divisor / divident;
     }
 };
 
@@ -45,7 +45,7 @@ int main()
     }
     catch (const DivideByZeroException &err)
     {
-        cerr << err.what() << endl; // Print the error message
+        cerr << err.what() << endl;
     }
 
     return 0;
