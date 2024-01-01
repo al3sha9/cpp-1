@@ -5,7 +5,6 @@ using namespace std;
 
 fstream file;
 char x;
-
 class GetDetails{
 	public:
     char name[30];
@@ -16,7 +15,6 @@ class GetDetails{
 			if (!file){
 				cout<<"File does not exist!";
 			}
-
 			else {
 				cout<<"File created!"<<endl;
                 cout<<"Enter your name and roll number: "<<endl;
@@ -25,7 +23,6 @@ class GetDetails{
 				file<<name<<endl;
                 file<<rollNumber<<endl;
 			}
-			
 			file.close();
 	}
 
