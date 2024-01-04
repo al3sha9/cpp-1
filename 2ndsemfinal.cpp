@@ -1,3 +1,7 @@
-//
-// Created by ali on 12/31/23.
-//
+#include <iostream>
+using namespace std;
+
+int main(){
+    cout<<"HELLO";
+    return 0;
+}
