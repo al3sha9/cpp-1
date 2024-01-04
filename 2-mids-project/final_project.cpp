@@ -8,30 +8,36 @@ using namespace std;
 const string NOTES_FILE = "notes.txt";
 const string USER_FILE = "users.txt";
 
-// User login 
-class User{
+// User login
+class User
+{
 public:
     string username;
     string password;
 
-    User(const string &uname, const string &pword){
+    User(const string &uname, const string &pword)
+    {
         username = uname;
         password = pword;
     }
 
-    void saveUser() const {
+    void saveUser() const
+    {
         ofstream userFile(USER_FILE, ios::app);
-        
-        if (userFile.is_open()){
+
+        if (userFile.is_open())
+        {
             userFile << username << " " << password << endl;
             userFile.close();
         }
-        else{
+        else
+        {
             cout << "Error: Could not open the user file for writing." << endl;
         }
     }
 
-    static bool isUserRegistered(const string &username, const string &password){
+    static bool isUserRegistered(const string &username, const string &password)
+    {
         ifstream userFile(USER_FILE);
         string uname, pword;
         while (userFile >> uname >> pword)
@@ -56,11 +62,11 @@ private:
     int alarmMinute;
     int alarmSecond;
     int remainingSeconds;
-    
+
 public:
-    // Alarm(){} //default constructor of Alarm class because error in main() 
+    // Alarm(){} //default constructor of Alarm class because error in main()
     Alarm()
-    {   
+    {
         alarmHour = 0;
         alarmMinute = 0;
         alarmSecond = 0;
@@ -68,98 +74,111 @@ public:
         remainingSeconds = 0;
     }
 
-    friend void setandGetAlarmTime(Alarm a);
-    friend void timeDifference(Alarm a);
-    friend void startAlarm(Alarm a);
+    friend void setandGetAlarmTime(Alarm &a);
+    friend void timeDifference(Alarm &a);
+    friend void startAlarm(Alarm &a);
 };
 
 // Friend functions of Alarm Class
 
-void setandGetAlarmTime(Alarm a){
-        a.alarmHour = 0;
-        a.alarmMinute = 0;
-        a.alarmSecond = 0;
-        a.remainingSeconds = 0;
-        cout << "Enter Alarm Time in 24-hour format [HH:MM:SS]: ";
-        cin >> a.alarmHour;
-        cin.ignore();
-        cin >> a.alarmMinute;
-        cin.ignore();
-        cin >> a.alarmSecond;
+void setandGetAlarmTime(Alarm &a)
+{
+    a.alarmHour = 0;
+    a.alarmMinute = 0;
+    a.alarmSecond = 0;
+    a.remainingSeconds = 0;
+    cout << "Enter Alarm Time in 24-hour format [HH:MM:SS]: ";
+    cin >> a.alarmHour;
+    cin.ignore();
+    cin >> a.alarmMinute;
+    cin.ignore();
+    cin >> a.alarmSecond;
 }
-void timeDifference(Alarm a){
-        int currentHour, currentMinute, currentSecond;
-        cout << "Enter Current Time in 24-hour format [HH:MM:SS]: ";
-        cin >> currentHour;
-        cin.ignore();
-        cin >> currentMinute;
-        cin.ignore();
-        cin >> currentSecond;
+void timeDifference(Alarm &a)
+{
+    int currentHour, currentMinute, currentSecond;
+    cout << "Enter Current Time in 24-hour format [HH:MM:SS]: ";
+    cin >> currentHour;
+    cin.ignore();
+    cin >> currentMinute;
+    cin.ignore();
+    cin >> currentSecond;
 
-        a.remainingSeconds = (a.alarmHour - currentHour) * 3600 + (a.alarmMinute - currentMinute) * 60 + (a.alarmSecond - currentSecond);
+    a.remainingSeconds = (a.alarmHour - currentHour) * 3600 + (a.alarmMinute - currentMinute) * 60 + (a.alarmSecond - currentSecond);
 
-        if (a.remainingSeconds < 0){
-            a.remainingSeconds += 86400;
-        }
+    if (a.remainingSeconds < 0)
+    {
+        a.remainingSeconds += 86400;
+    }
 }
-void startAlarm(Alarm a){
-        a.remainingSeconds = 0;
-        while (a.remainingSeconds > 0){
-            int hours = a.remainingSeconds / 3600;
-            int minutes = (a.remainingSeconds % 3600) / 60;
-            int seconds = a.remainingSeconds % 60;
 
-            cout << "TIME REMAINING: " << hours << ":" << minutes << ":" << seconds << endl;
-            a.remainingSeconds--;
+void startAlarm(Alarm &a)
+{
+    while (a.remainingSeconds >= 0)
+    {
+        int hours = a.remainingSeconds / 3600;
+        int minutes = (a.remainingSeconds % 3600) / 60;
+        int seconds = a.remainingSeconds % 60;
 
-            for (int i = 0; i < 100000000; i++)
-            {
-            }
+        cout << "TIME REMAINING: " << hours << ":" << minutes << ":" << seconds << endl;
+        a.remainingSeconds--;
 
-            if (a.remainingSeconds == 0)
-            {
-                cout << "ALARM TIME REACHED" << endl;
-                cout << '\a';
-                return;
-            }
+        for (int i = 0; i < 100000000; i++)
+        {
         }
+
+        if (a.remainingSeconds < 0)
+        {
+            cout << "ALARM TIME REACHED" << endl;
+            cout << '\a';
+            return;
+        }
+    }
 }
 
 //  Base class (DateInfo) providing common functionality related to date information.
-class DateInfo {
+class DateInfo
+{
 protected:
     tm currentDate;
 
 public:
-    DateInfo() {
-        time_t now = time(0); // This line gets the current time in seconds
+    DateInfo()
+    {
+        time_t now = time(0);           // This line gets the current time in seconds
         currentDate = *localtime(&now); /* is a function that converts the total time (represented by now)
-        into a more human-readable format*/ 
+        into a more human-readable format*/
     }
 
-    int getYear() const {
+    int getYear() const
+    {
         return 1900 + currentDate.tm_year;
     }
 
-    int getMonth() const {
+    int getMonth() const
+    {
         return 1 + currentDate.tm_mon;
     }
 
-    int getDay() const {
+    int getDay() const
+    {
         return currentDate.tm_mday;
     }
 
     // Virtual funtions in DataInfo()
-    virtual int getDaysInMonth(int year, int month) const {
+    virtual int getDaysInMonth(int year, int month) const
+    {
         const int daysInMonth[] = {0, 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
         int days = daysInMonth[month];
-        if (month == 2 && ((year % 4 == 0 && year % 100 != 0) || (year % 400 == 0))) {
+        if (month == 2 && ((year % 4 == 0 && year % 100 != 0) || (year % 400 == 0)))
+        {
             days = 29;
         }
         return days;
     }
 
-    virtual int calculateFirstDay(int year, int month) const {
+    virtual int calculateFirstDay(int year, int month) const
+    {
         tm firstDay = {0, 0, 0, 1, month - 1, year - 1900};
         mktime(&firstDay);
         return firstDay.tm_wday;
@@ -167,9 +186,11 @@ public:
 };
 
 // Derived from DateInfo to inherit date-related functionality.
-class Calendar : public DateInfo {
+class Calendar : public DateInfo
+{
 public:
-    void displayCurrentMonthCalendar() {
+    void displayCurrentMonthCalendar()
+    {
         int year = getYear();
         int month = getMonth();
         int day = getDay();
@@ -179,11 +200,13 @@ public:
         cout << "\t\t  " << year << " - " << month << "   \n";
         cout << " Su  Mo  Tu  We  Th  Fr  Sa\n";
 
-        for (int i = 0; i < startingDay; i++) {
+        for (int i = 0; i < startingDay; i++)
+        {
             cout << "    ";
         }
 
-        for (int i = 1; i <= daysInMonth; i++) {
+        for (int i = 1; i <= daysInMonth; i++)
+        {
             if (i < 10)
                 cout << " ";
             if (i == day)
@@ -326,7 +349,8 @@ private:
 };
 
 // Base class
-class NoteBase{
+class NoteBase
+{
 public:
     string title;
     string content;
@@ -339,10 +363,11 @@ public:
 };
 
 // Note Child Class
-class Note : public NoteBase{
+class Note : public NoteBase
+{
 public:
-
-    void createNote() override {
+    void createNote() override
+    {
         cout << "Enter note title: ";
         cin.ignore();
         getline(cin, title);
@@ -350,25 +375,29 @@ public:
         getline(cin, content);
     }
 
-    void displayNote() const override {
+    void displayNote() const override
+    {
         cout << "Title: " << title << endl;
         cout << "Content: " << content << endl;
     }
 
-    bool isEmpty() const override {
+    bool isEmpty() const override
+    {
         return title.empty() && content.empty();
     }
 
-    void deleteNote() override {
+    void deleteNote() override
+    {
         title.clear();
         content.clear();
     }
 };
 
 // Note class
-class NoteTakingApp{
+class NoteTakingApp
+{
 private:
-    NoteBase* notes[100];
+    NoteBase *notes[100];
     int noteCount;
 
 public:
@@ -448,7 +477,8 @@ public:
     }
 
 private:
-    void loadNotes(){
+    void loadNotes()
+    {
         ifstream inFile(NOTES_FILE);
         if (!inFile.is_open())
         {
@@ -496,213 +526,234 @@ private:
         outFile.close();
     }
 };
+
 int main()
 {
-    int choice;
-    bool loggedIn = false;
-
-    while (!loggedIn)
+    try
     {
-        cout << "\n\t\t\t\tWelcome to the\n"
-             << endl;
-        cout << "T)tttttt   A)aa    S)ssss  K)   kk      M)mm mmm    A)aa   N)n   nn   A)aa     G)gggg E)eeeeee R)rrrrr  " << endl;
-        cout << "   T)     A)  aa  S)    ss K)  kk      M)  mm  mm  A)  aa  N)nn  nn  A)  aa   G)      E)       R)    rr " << endl;
-        cout << "   T)    A)    aa  S)ss    K)kkk       M)  mm  mm A)    aa N) nn nn A)    aa G)  ggg  E)eeeee  R)  rrr  " << endl;
-        cout << "   T)    A)aaaaaa      S)  K)  kk      M)  mm  mm A)aaaaaa N)  nnnn A)aaaaaa G)    gg E)       R) rr    " << endl;
-        cout << "   T)    A)    aa S)    ss K)   kk     M)      mm A)    aa N)   nnn A)    aa  G)   gg E)       R)   rr  " << endl;
-        cout << "   T)    A)    aa  S)ssss  K)    kk    M)      mm A)    aa N)    nn A)    aa   G)ggg  E)eeeeee R)    rr " << endl;
+        int choice;
+        bool loggedIn = false;
+        Alarm myAlarm; // Create the Alarm object outside the try block
 
-        cout << "\n\n_________________________" << endl;
-        cout << "\n\t1. Login" << endl;
-        cout << "\t2. Signup" << endl;
-        cout << "\tEnter your choice: " << endl;
-        cout << "\n_________________________\n";
-        cin >> choice;
-
-        if (choice == 1)
+        while (!loggedIn)
         {
-            string username, password;
-            cout << "\nEnter your username: ";
-            cin >> username;
-            cout << "\nEnter your password: ";
-            cin >> password;
-            cout << "\n_________________________\n";
+            cout << "\n\t\t\t\tWelcome to the\n"
+                 << endl;
+            cout << "T)tttttt   A)aa    S)ssss  K)   kk      M)mm mmm    A)aa   N)n   nn   A)aa     G)gggg E)eeeeee R)rrrrr  " << endl;
+            cout << "   T)     A)  aa  S)    ss K)  kk      M)  mm  mm  A)  aa  N)nn  nn  A)  aa   G)      E)       R)    rr " << endl;
+            cout << "   T)    A)    aa  S)ss    K)kkk       M)  mm  mm A)    aa N) nn nn A)    aa G)  ggg  E)eeeee  R)  rrr  " << endl;
+            cout << "   T)    A)aaaaaa      S)  K)  kk      M)  mm  mm A)aaaaaa N)  nnnn A)aaaaaa G)    gg E)       R) rr    " << endl;
+            cout << "   T)    A)    aa S)    ss K)   kk     M)      mm A)    aa N)   nnn A)    aa  G)   gg E)       R)   rr  " << endl;
+            cout << "   T)    A)    aa  S)ssss  K)    kk    M)      mm A)    aa N)    nn A)    aa   G)ggg  E)eeeeee R)    rr " << endl;
 
-            if (User::isUserRegistered(username, password))
+            cout << "\n\n_________________________" << endl;
+            cout << "\n\t1. Login" << endl;
+            cout << "\t2. Signup" << endl;
+            cout << "\tEnter your choice: " << endl;
+            cout << "\n_________________________\n";
+            cin >> choice;
+
+            if (choice == 1)
             {
-                cout << "\nLogin successful!" << endl;
-                loggedIn = true;
+                string username, password;
+                cout << "\nEnter your username: ";
+                cin >> username;
+                cout << "\nEnter your password: ";
+                cin >> password;
+                cout << "\n_________________________\n";
+
+                if (User::isUserRegistered(username, password))
+                {
+                    cout << "\nLogin successful!" << endl;
+                    loggedIn = true;
+                }
+                else
+                {
+                    cout << "\nLogin failed. Incorrect username or password. Please try again." << endl;
+                }
+            }
+            else if (choice == 2)
+            {
+                string newUsername, newPassword;
+                cout << "\n_________________________\n";
+                cout << "\nEnter a new username: ";
+                cin >> newUsername;
+                cout << "\nEnter a new password: ";
+                cin >> newPassword;
+                User newUser(newUsername, newPassword);
+                newUser.saveUser();
+                cout << "\nUser registered successfully!" << endl;
+                cout << "\n_________________________\n";
             }
             else
             {
-                cout << "\nLogin failed. Incorrect username or password. Please try again." << endl;
+                cout << "Invalid choice. Please try again." << endl;
             }
         }
-        else if (choice == 2)
-        {
-            string newUsername, newPassword;
-            cout << "\n_________________________\n";
-            cout << "\nEnter a new username: ";
-            cin >> newUsername;
-            cout << "\nEnter a new password: ";
-            cin >> newPassword;
-            User newUser(newUsername, newPassword);
-            newUser.saveUser();
-            cout << "\nUser registered successfully!" << endl;
-            cout << "\n_________________________\n";
-        }
-        else
-        {
-            cout << "Invalid choice. Please try again." << endl;
-        }
-    }
 
-    while (loggedIn)
-    {
-        cout << "\n<=================================>\n";
-        cout << "\nWhat would you like to do?" << endl;
-        cout << "\t1. Calendar" << endl;
-        cout << "\t2. Stopwatch" << endl;
-        cout << "\t3. Task List" << endl;
-        cout << "\t4. Note Taking App" << endl;
-        cout << "\t5. Alarm Clock" << endl;
-        cout << "\t6. Exit" << endl;
-        cout << "\tEnter your choice: ";
-        cin >> choice;
-        switch (choice)
+        while (loggedIn)
         {
-        case 1:
-        {
-            Calendar calendar;
-            calendar.displayCurrentMonthCalendar();
-            break;
-        }
-        case 2:
-        {
-            Stopwatch stopwatch;
-            char action;
+            cout << "\n<=================================>\n";
+            cout << "\nWhat would you like to do?" << endl;
+            cout << "\t1. Calendar" << endl;
+            cout << "\t2. Stopwatch" << endl;
+            cout << "\t3. Task List" << endl;
+            cout << "\t4. Note Taking App" << endl;
+            cout << "\t5. Alarm Clock" << endl;
+            cout << "\t6. Exit" << endl;
+            cout << "\tEnter your choice: ";
+            cin >> choice;
 
-            do
+            switch (choice)
             {
-                cout << "\nPress 's' to start the stopwatch or 'q' to quit: ";
-                cin >> action;
+            case 1:
+            {
+                Calendar calendar;
+                calendar.displayCurrentMonthCalendar();
+                break;
+            }
+            case 2:
+            {
+                Stopwatch stopwatch;
+                char action;
 
-                if (action == 's')
+                do
                 {
-                    stopwatch.start();
+                    cout << "\nPress 's' to start the stopwatch or 'q' to quit: ";
+                    cin >> action;
 
-                    while (cin >> action)
+                    if (action == 's')
                     {
-                        if (action == 's')
+                        stopwatch.start();
+
+                        while (cin >> action)
                         {
-                            stopwatch.stop();
-                            break;
+                            if (action == 's')
+                            {
+                                stopwatch.stop();
+                                break;
+                            }
                         }
+
+                        cout << "\nElapsed time: " << stopwatch.getElapsedSeconds() << " seconds" << endl;
+                        cout << "\n_________________________\n";
+                    }
+                } while (action != 'q');
+
+                break;
+            }
+            case 3:
+            {
+                TaskList taskList;
+                string task;
+
+                while (true)
+                {
+                    taskList.displayTasks();
+
+                    cout << "\nOptions:\n";
+                    cout << "\t1. Add Task\n";
+                    cout << "\t2. Mark Task as Completed\n";
+                    cout << "\t3. Return to Main Menu\n";
+
+                    int taskChoice;
+                    cout << "\nEnter your choice: ";
+                    cin >> taskChoice;
+                    cin.ignore();
+
+                    switch (taskChoice)
+                    {
+                    case 1:
+                        cout << "\nEnter the task: ";
+                        getline(cin, task);
+                        taskList.addTask(task);
+                        break;
+                    case 2:
+                        int taskIndex;
+                        cout << "\nEnter the task number to mark as completed: ";
+                        cin >> taskIndex;
+                        taskList.markTaskAsCompleted(taskIndex);
+                        break;
+                    case 3:
+                        cout << "Returning to the main menu." << endl;
+                        break;
+                    default:
+                        cout << "Error: Invalid choice. Please try again." << endl;
                     }
 
-                    cout << "\nElapsed time: " << stopwatch.getElapsedSeconds() << " seconds" << endl;
-                    cout << "\n_________________________\n";
+                    if (taskChoice == 3)
+                        break;
                 }
-            } while (action != 'q');
 
-            break;
-        }
-        case 3:
-        {
-            TaskList taskList;
-            string task;
-
-            while (true)
-            {
-                taskList.displayTasks();
-
-                cout << "\nOptions:\n";
-                cout << "\t1. Add Task\n";
-                cout << "\t2. Mark Task as Completed\n";
-                cout << "\t3. Quit\n";
-
-                int taskChoice;
-                cout << "\nEnter your choice: ";
-                cin >> taskChoice;
-                cin.ignore();
-
-                switch (taskChoice)
-                {
-                case 1:
-                    cout << "\nEnter the task: ";
-                    getline(cin, task);
-                    taskList.addTask(task);
-                    break;
-                case 2:
-                    int taskIndex;
-                    cout << "\nEnter the task number to mark as completed: ";
-                    cin >> taskIndex;
-                    taskList.markTaskAsCompleted(taskIndex);
-                    break;
-                case 3:
-                    cout << "Goodbye!" << endl;
-                    return 0;
-                default:
-                    cout << "Error: Invalid choice. Please try again." << endl;
-                }
+                break;
             }
-            break;
-        }
-        case 4:
-        {
-            NoteTakingApp app;
 
-            do
+            case 4:
             {
-                cout << "\n_________________________\n";
-                cout << "\nNote Taking App" << endl;
-                cout << "\t1. Create Note" << endl;
-                cout << "\t2. View Notes" << endl;
-                cout << "\t3. Delete Note" << endl;
-                cout << "\t4. Exit" << endl;
-                cout << "\tEnter your choice: ";
-                cin >> choice;
-                cout << "\n_________________________\n";
+                NoteTakingApp app;
 
-                switch (choice)
+                do
                 {
-                case 1:
-                    app.createNote();
-                    break;
-                case 2:
-                    app.viewNotes();
-                    break;
-                case 3:
-                    app.deleteNote();
-                    break;
-                case 4:
-                    cout << "\nExiting Note Taking App." << endl;
-                    break;
-                default:
-                    cout << "\nInvalid choice. Please try again." << endl;
+                    cout << "\n_________________________\n";
+                    cout << "\nNote Taking App" << endl;
+                    cout << "\t1. Create Note" << endl;
+                    cout << "\t2. View Notes" << endl;
+                    cout << "\t3. Delete Note" << endl;
+                    cout << "\t4. Exit" << endl;
+                    cout << "\tEnter your choice: ";
+                    cin >> choice;
+                    cout << "\n_________________________\n";
+
+                    switch (choice)
+                    {
+                    case 1:
+                        app.createNote();
+                        break;
+                    case 2:
+                        app.viewNotes();
+                        break;
+                    case 3:
+                        app.deleteNote();
+                        break;
+                    case 4:
+                        cout << "\nExiting Note Taking App." << endl;
+                        break;
+                    default:
+                        cout << "\nInvalid choice. Please try again." << endl;
+                    }
+                } while (choice != 4);
+                break;
+            }
+            case 5:
+            {
+                try
+                {
+                    setandGetAlarmTime(myAlarm);
+                    timeDifference(myAlarm);
+                    startAlarm(myAlarm);
                 }
-            } while (choice != 4);
-            break;
+                catch (const exception &e)
+                {
+                    cerr << "An error occurred in the Alarm section: " << e.what() << endl;
+                }
+                break;
+            }
+            case 6:
+                cout << "\n\nT)tttttt H)    hh   A)aa   N)n   nn K)   kk   S)ssss  " << endl;
+                cout << "   T)    H)    hh  A)  aa  N)nn  nn K)  kk   S)    ss " << endl;
+                cout << "   T)    H)hhhhhh A)    aa N) nn nn K)kkk     S)ss    " << endl;
+                cout << "   T)    H)    hh A)aaaaaa N)  nnnn K)  kk        S)  " << endl;
+                cout << "   T)    H)    hh A)    aa N)   nnn K)   kk  S)    ss " << endl;
+                cout << "   T)    H)    hh A)    aa N)    nn K)    kk  S)ssss  " << endl;
+                return 0;
+            default:
+                cout << "Invalid choice. Please try again." << endl;
+            }
         }
-        case 5:
-        {
-            Alarm myAlarm;
-            setandGetAlarmTime(myAlarm);
-            timeDifference(myAlarm);
-            startAlarm(myAlarm);
-            break;
-        }
-        case 6:
-            cout << "\n\nT)tttttt H)    hh   A)aa   N)n   nn K)   kk   S)ssss  " << endl;
-            cout << "   T)    H)    hh  A)  aa  N)nn  nn K)  kk   S)    ss " << endl;
-            cout << "   T)    H)hhhhhh A)    aa N) nn nn K)kkk     S)ss    " << endl;
-            cout << "   T)    H)    hh A)aaaaaa N)  nnnn K)  kk        S)  " << endl;
-            cout << "   T)    H)    hh A)    aa N)   nnn K)   kk  S)    ss " << endl;
-            cout << "   T)    H)    hh A)    aa N)    nn K)    kk  S)ssss  " << endl;
-            return 0;
-        default:
-            cout << "Invalid choice. Please try again." << endl;
-        }
+    }
+    catch (const exception &e)
+    {
+        cerr << "An unexpected error occurred: " << e.what() << endl;
     }
 
     return 0;
