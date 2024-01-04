@@ -6,6 +6,50 @@
 using namespace std;
 
 const string NOTES_FILE = "notes.txt";
+const string USER_FILE = "users.txt";
+// User login 
+class User
+{
+public:
+    string username;
+    string password;
+
+    User(const string &uname, const string &pword)
+    {
+        username = uname;
+        password = pword;
+    }
+
+    void saveUser() const
+    {
+        ofstream userFile(USER_FILE, ios::app);
+        if (userFile.is_open())
+        {
+            userFile << username << " " << password << endl;
+            userFile.close();
+        }
+        else
+        {
+            cout << "Error: Could not open the user file for writing." << endl;
+        }
+    }
+
+    static bool isUserRegistered(const string &username, const string &password)
+    {
+        ifstream userFile(USER_FILE);
+        string uname, pword;
+        while (userFile >> uname >> pword)
+        {
+            if (uname == username && pword == password)
+            {
+                userFile.close();
+                return true;
+            }
+        }
+        userFile.close();
+        return false;
+    }
+};
 
 // Alarm Class
 
@@ -175,7 +219,7 @@ public:
         cout << "\a";
         cout << "Stopwatch stopped." << endl;
     }
-
+    // This allows you to measure the elapsed time between starting and stopping the stopwatch in seconds.
     double getElapsedSeconds()
     {
         return difftime(stopTime, startTime);
@@ -456,23 +500,79 @@ private:
         outFile.close();
     }
 };
-
 int main()
 {
     int choice;
+    bool loggedIn = false;
 
-    while (true)
+    while (!loggedIn)
     {
-        cout << "Welcome to the Dashboard!" << endl;
-        cout << "1. Calendar" << endl;
-        cout << "2. Stopwatch" << endl;
-        cout << "3. Task List" << endl;
-        cout << "4. Note Taking App" << endl;
-        cout << "5. Alarm Clock" << endl;
-        cout << "6. Exit" << endl;
-        cout << "Enter your choice: ";
+        cout << "\n\t\t\t\tWelcome to the\n"
+             << endl;
+        cout << "T)tttttt   A)aa    S)ssss  K)   kk      M)mm mmm    A)aa   N)n   nn   A)aa     G)gggg E)eeeeee R)rrrrr  " << endl;
+        cout << "   T)     A)  aa  S)    ss K)  kk      M)  mm  mm  A)  aa  N)nn  nn  A)  aa   G)      E)       R)    rr " << endl;
+        cout << "   T)    A)    aa  S)ss    K)kkk       M)  mm  mm A)    aa N) nn nn A)    aa G)  ggg  E)eeeee  R)  rrr  " << endl;
+        cout << "   T)    A)aaaaaa      S)  K)  kk      M)  mm  mm A)aaaaaa N)  nnnn A)aaaaaa G)    gg E)       R) rr    " << endl;
+        cout << "   T)    A)    aa S)    ss K)   kk     M)      mm A)    aa N)   nnn A)    aa  G)   gg E)       R)   rr  " << endl;
+        cout << "   T)    A)    aa  S)ssss  K)    kk    M)      mm A)    aa N)    nn A)    aa   G)ggg  E)eeeeee R)    rr " << endl;
+
+        cout << "\n\n_________________________" << endl;
+        cout << "\n\t1. Login" << endl;
+        cout << "\t2. Signup" << endl;
+        cout << "\tEnter your choice: " << endl;
+        cout << "\n_________________________\n";
         cin >> choice;
 
+        if (choice == 1)
+        {
+            string username, password;
+            cout << "\nEnter your username: ";
+            cin >> username;
+            cout << "\nEnter your password: ";
+            cin >> password;
+            cout << "\n_________________________\n";
+
+            if (User::isUserRegistered(username, password))
+            {
+                cout << "\nLogin successful!" << endl;
+                loggedIn = true;
+            }
+            else
+            {
+                cout << "\nLogin failed. Incorrect username or password. Please try again." << endl;
+            }
+        }
+        else if (choice == 2)
+        {
+            string newUsername, newPassword;
+            cout << "\n_________________________\n";
+            cout << "\nEnter a new username: ";
+            cin >> newUsername;
+            cout << "\nEnter a new password: ";
+            cin >> newPassword;
+            User newUser(newUsername, newPassword);
+            newUser.saveUser();
+            cout << "\nUser registered successfully!" << endl;
+            cout << "\n_________________________\n";
+        }
+        else
+        {
+            cout << "Invalid choice. Please try again." << endl;
+        }
+    }
+
+    while (loggedIn)
+    {
+        cout << "\n<=================================>\n";
+        cout << "\nWhat would you like to do?" << endl;
+        cout << "\t1. Calendar" << endl;
+        cout << "\t2. Stopwatch" << endl;
+        cout << "\t3. Task List" << endl;
+        cout << "\t4. Note Taking App" << endl;
+        cout << "\t5. Alarm Clock" << endl;
+        cout << "\t6. Exit" << endl;
+        cout << "\tEnter your choice: ";
+        cin >> choice;
         switch (choice)
         {
         case 1:
@@ -488,7 +588,7 @@ int main()
 
             do
             {
-                cout << "Press 's' to start the stopwatch or 'q' to quit: ";
+                cout << "\nPress 's' to start the stopwatch or 'q' to quit: ";
                 cin >> action;
 
                 if (action == 's')
@@ -504,15 +604,14 @@ int main()
                         }
                     }
 
-                    cout << "Elapsed time: " << stopwatch.getElapsedSeconds() << " seconds" << endl;
+                    cout << "\nElapsed time: " << stopwatch.getElapsedSeconds() << " seconds" << endl;
+                    cout << "\n_________________________\n";
                 }
             } while (action != 'q');
 
-            cout << "Goodbye!" << endl;
             break;
         }
         case 3:
-
         {
             TaskList taskList;
             string task;
@@ -522,25 +621,25 @@ int main()
                 taskList.displayTasks();
 
                 cout << "\nOptions:\n";
-                cout << "1. Add Task\n";
-                cout << "2. Mark Task as Completed\n";
-                cout << "3. Quit\n";
+                cout << "\t1. Add Task\n";
+                cout << "\t2. Mark Task as Completed\n";
+                cout << "\t3. Quit\n";
 
                 int taskChoice;
-                cout << "Enter your choice: ";
+                cout << "\nEnter your choice: ";
                 cin >> taskChoice;
                 cin.ignore();
 
                 switch (taskChoice)
                 {
                 case 1:
-                    cout << "Enter the task: ";
+                    cout << "\nEnter the task: ";
                     getline(cin, task);
                     taskList.addTask(task);
                     break;
                 case 2:
                     int taskIndex;
-                    cout << "Enter the task number to mark as completed: ";
+                    cout << "\nEnter the task number to mark as completed: ";
                     cin >> taskIndex;
                     taskList.markTaskAsCompleted(taskIndex);
                     break;
@@ -559,13 +658,15 @@ int main()
 
             do
             {
-                cout << "Note Taking App" << endl;
-                cout << "1. Create Note" << endl;
-                cout << "2. View Notes" << endl;
-                cout << "3. Delete Note" << endl;
-                cout << "4. Exit" << endl;
-                cout << "Enter your choice: ";
+                cout << "\n_________________________\n";
+                cout << "\nNote Taking App" << endl;
+                cout << "\t1. Create Note" << endl;
+                cout << "\t2. View Notes" << endl;
+                cout << "\t3. Delete Note" << endl;
+                cout << "\t4. Exit" << endl;
+                cout << "\tEnter your choice: ";
                 cin >> choice;
+                cout << "\n_________________________\n";
 
                 switch (choice)
                 {
@@ -579,10 +680,10 @@ int main()
                     app.deleteNote();
                     break;
                 case 4:
-                    cout << "Exiting Note Taking App." << endl;
+                    cout << "\nExiting Note Taking App." << endl;
                     break;
                 default:
-                    cout << "Invalid choice. Please try again." << endl;
+                    cout << "\nInvalid choice. Please try again." << endl;
                 }
             } while (choice != 4);
             break;
@@ -596,7 +697,12 @@ int main()
             break;
         }
         case 6:
-            cout << "Goodbye!" << endl;
+            cout << "\n\nT)tttttt H)    hh   A)aa   N)n   nn K)   kk   S)ssss  " << endl;
+            cout << "   T)    H)    hh  A)  aa  N)nn  nn K)  kk   S)    ss " << endl;
+            cout << "   T)    H)hhhhhh A)    aa N) nn nn K)kkk     S)ss    " << endl;
+            cout << "   T)    H)    hh A)aaaaaa N)  nnnn K)  kk        S)  " << endl;
+            cout << "   T)    H)    hh A)    aa N)   nnn K)   kk  S)    ss " << endl;
+            cout << "   T)    H)    hh A)    aa N)    nn K)    kk  S)ssss  " << endl;
             return 0;
         default:
             cout << "Invalid choice. Please try again." << endl;

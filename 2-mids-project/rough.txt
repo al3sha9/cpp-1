@@ -1,0 +1,149 @@
+
+int main()
+{
+    int choice;
+
+    while (true)
+    {
+        cout << "Welcome to the Dashboard!" << endl;
+        cout << "1. Calendar" << endl;
+        cout << "2. Stopwatch" << endl;
+        cout << "3. Task List" << endl;
+        cout << "4. Note Taking App" << endl;
+        cout << "5. Alarm Clock" << endl;
+        cout << "6. Exit" << endl;
+        cout << "Enter your choice: ";
+        cin >> choice;
+
+        switch (choice)
+        {
+        case 1:
+        {
+            Calendar calendar;
+            calendar.displayCurrentMonthCalendar();
+            break;
+        }
+        case 2:
+        {
+            Stopwatch stopwatch;
+            char action;
+
+            do
+            {
+                cout << "Press 's' to start the stopwatch or 'q' to quit: ";
+                cin >> action;
+
+                if (action == 's')
+                {
+                    stopwatch.start();
+
+                    while (cin >> action)
+                    {
+                        if (action == 's')
+                        {
+                            stopwatch.stop();
+                            break;
+                        }
+                    }
+
+                    cout << "Elapsed time: " << stopwatch.getElapsedSeconds() << " seconds" << endl;
+                }
+            } while (action != 'q');
+
+            cout << "Goodbye!" << endl;
+            break;
+        }
+        case 3:
+
+        {
+            TaskList taskList;
+            string task;
+
+            while (true)
+            {
+                taskList.displayTasks();
+
+                cout << "\nOptions:\n";
+                cout << "1. Add Task\n";
+                cout << "2. Mark Task as Completed\n";
+                cout << "3. Quit\n";
+
+                int taskChoice;
+                cout << "Enter your choice: ";
+                cin >> taskChoice;
+                cin.ignore();
+
+                switch (taskChoice)
+                {
+                case 1:
+                    cout << "Enter the task: ";
+                    getline(cin, task);
+                    taskList.addTask(task);
+                    break;
+                case 2:
+                    int taskIndex;
+                    cout << "Enter the task number to mark as completed: ";
+                    cin >> taskIndex;
+                    taskList.markTaskAsCompleted(taskIndex);
+                    break;
+                case 3:
+                    cout << "Goodbye!" << endl;
+                    return 0;
+                default:
+                    cout << "Error: Invalid choice. Please try again." << endl;
+                }
+            }
+            break;
+        }
+        case 4:
+        {
+            NoteTakingApp app;
+
+            do
+            {
+                cout << "Note Taking App" << endl;
+                cout << "1. Create Note" << endl;
+                cout << "2. View Notes" << endl;
+                cout << "3. Delete Note" << endl;
+                cout << "4. Exit" << endl;
+                cout << "Enter your choice: ";
+                cin >> choice;
+
+                switch (choice)
+                {
+                case 1:
+                    app.createNote();
+                    break;
+                case 2:
+                    app.viewNotes();
+                    break;
+                case 3:
+                    app.deleteNote();
+                    break;
+                case 4:
+                    cout << "Exiting Note Taking App." << endl;
+                    break;
+                default:
+                    cout << "Invalid choice. Please try again." << endl;
+                }
+            } while (choice != 4);
+            break;
+        }
+        case 5:
+        {
+            Alarm myAlarm;
+            setandGetAlarmTime(myAlarm);
+            timeDifference(myAlarm);
+            startAlarm(myAlarm);
+            break;
+        }
+        case 6:
+            cout << "Goodbye!" << endl;
+            return 0;
+        default:
+            cout << "Invalid choice. Please try again." << endl;
+        }
+    }
+
+    return 0;
+}
