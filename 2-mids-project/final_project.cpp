@@ -85,42 +85,65 @@ void startAlarm(Alarm a){
         }
 }
 
-// Calender class
-
-class Calendar
-{
+//  Base class (DateInfo) providing common functionality related to date information.
+class DateInfo {
+protected:
     tm currentDate;
-    int year;
-    int month;
-    int day;
-    int daysInMonth;
-    int startingDay;
 
 public:
-    Calendar()
-    {
-        time_t now = time(0);
-        currentDate = *localtime(&now);
-        year = 1900 + currentDate.tm_year;
-        month = 1 + currentDate.tm_mon;
-        day = currentDate.tm_mday;
+    DateInfo() {
+        time_t now = time(0); // This line gets the current time in seconds
+        currentDate = *localtime(&now); /* is a function that converts the total time (represented by now)
+        into a more human-readable format*/ 
     }
 
-    void displayCurrentMonthCalendar()
-    {
-        daysInMonth = getDaysInMonth(year, month);
-        calculateFirstDay();
+    int getYear() const {
+        return 1900 + currentDate.tm_year;
+    }
+
+    int getMonth() const {
+        return 1 + currentDate.tm_mon;
+    }
+
+    int getDay() const {
+        return currentDate.tm_mday;
+    }
+
+    // Virtual funtions in DataInfo()
+    virtual int getDaysInMonth(int year, int month) const {
+        const int daysInMonth[] = {0, 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
+        int days = daysInMonth[month];
+        if (month == 2 && ((year % 4 == 0 && year % 100 != 0) || (year % 400 == 0))) {
+            days = 29;
+        }
+        return days;
+    }
+
+    virtual int calculateFirstDay(int year, int month) const {
+        tm firstDay = {0, 0, 0, 1, month - 1, year - 1900};
+        mktime(&firstDay);
+        return firstDay.tm_wday;
+    }
+};
+
+// Derived from DateInfo to inherit date-related functionality.
+class Calendar : public DateInfo {
+public:
+    void displayCurrentMonthCalendar() {
+        int year = getYear();
+        int month = getMonth();
+        int day = getDay();
+        int daysInMonth = getDaysInMonth(year, month);
+        int startingDay = calculateFirstDay(year, month);
 
         cout << "\t\t  " << year << " - " << month << "   \n";
         cout << " Su  Mo  Tu  We  Th  Fr  Sa\n";
 
-        for (int i = 0; i < startingDay; i++)
-        {
+        for (int i = 0; i < startingDay; i++) {
             cout << "    ";
         }
 
-        for (int i = 1; i <= daysInMonth; i++)
-        {
+        for (int i = 1; i <= daysInMonth; i++) {
             if (i < 10)
                 cout << " ";
             if (i == day)
@@ -130,25 +153,6 @@ public:
             if ((i + startingDay) % 7 == 0 || i == daysInMonth)
                 cout << endl;
         }
-    }
-
-private:
-    int getDaysInMonth(int year, int month)
-    {
-        const int daysInMonth[] = {0, 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
-        int days = daysInMonth[month];
-        if (month == 2 && ((year % 4 == 0 && year % 100 != 0) || (year % 400 == 0)))
-        {
-            days = 29;
-        }
-        return days;
-    }
-
-    void calculateFirstDay()
-    {
-        tm firstDay = {0, 0, 0, 1, month - 1, year - 1900};
-        mktime(&firstDay);
-        startingDay = firstDay.tm_wday;
     }
 };
 
