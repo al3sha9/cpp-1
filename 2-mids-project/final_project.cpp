@@ -281,12 +281,50 @@ private:
     }
 };
 
-class NoteTakingApp
-{
+// Base class
+class NoteBase{
+public:
+    string title;
+    string content;
+
+    // Abstract class - pure virtual function
+    virtual void createNote() = 0;
+    virtual void displayNote() const = 0;
+    virtual bool isEmpty() const = 0;
+    virtual void deleteNote() = 0;
+};
+
+// Note Child Class
+class Note : public NoteBase{
+public:
+
+    void createNote() override {
+        cout << "Enter note title: ";
+        cin.ignore();
+        getline(cin, title);
+        cout << "Enter note content: ";
+        getline(cin, content);
+    }
+
+    void displayNote() const override {
+        cout << "Title: " << title << endl;
+        cout << "Content: " << content << endl;
+    }
+
+    bool isEmpty() const override {
+        return title.empty() && content.empty();
+    }
+
+    void deleteNote() override {
+        title.clear();
+        content.clear();
+    }
+};
+
+// Note class
+class NoteTakingApp{
 private:
-
-
-    Note notes[100];
+    NoteBase* notes[100];
     int noteCount;
 
 public:
@@ -298,13 +336,19 @@ public:
     ~NoteTakingApp()
     {
         saveNotes();
+        // Release memory for dynamically allocated notes
+        for (int i = 0; i < noteCount; ++i)
+        {
+            delete notes[i];
+        }
     }
 
     void createNote()
     {
         if (noteCount < 100)
         {
-            notes[noteCount].createNote();
+            notes[noteCount] = new Note();
+            notes[noteCount]->createNote();
             noteCount++;
             cout << "Note created successfully!" << endl;
         }
@@ -314,7 +358,7 @@ public:
         }
     }
 
-    void viewNotes()
+    void viewNotes() const
     {
         if (noteCount == 0)
         {
@@ -325,9 +369,9 @@ public:
         cout << "Notes:" << endl;
         for (int i = 0; i < noteCount; i++)
         {
-            if (!notes[i].isEmpty())
+            if (!notes[i]->isEmpty())
             {
-                notes[i].displayNote();
+                notes[i]->displayNote();
                 cout << "-------------------" << endl;
             }
         }
@@ -348,9 +392,9 @@ public:
 
         for (int i = 0; i < noteCount; i++)
         {
-            if (notes[i].title == title)
+            if (notes[i]->title == title)
             {
-                notes[i].deleteNote();
+                notes[i]->deleteNote();
                 cout << "Note deleted successfully!" << endl;
                 return;
             }
@@ -360,8 +404,7 @@ public:
     }
 
 private:
-    void loadNotes()
-    {
+    void loadNotes(){
         ifstream inFile(NOTES_FILE);
         if (!inFile.is_open())
         {
@@ -372,13 +415,15 @@ private:
         while (noteCount < 100 && inFile)
         {
             string title, content;
+            // read lines from the file
             getline(inFile, title);
             getline(inFile, content);
 
             if (!title.empty() && !content.empty())
             {
-                notes[noteCount].title = title;
-                notes[noteCount].content = content;
+                notes[noteCount] = new Note();
+                notes[noteCount]->title = title;
+                notes[noteCount]->content = content;
                 noteCount++;
             }
         }
@@ -397,48 +442,17 @@ private:
 
         for (int i = 0; i < noteCount; i++)
         {
-            if (!notes[i].isEmpty())
+            if (!notes[i]->isEmpty())
             {
-                outFile << notes[i].title << endl;
-                outFile << notes[i].content << endl;
+                outFile << notes[i]->title << endl;
+                outFile << notes[i]->content << endl;
             }
         }
 
         outFile.close();
     }
 };
-class Note : public NoteTakingApp{
-        string title;
-        string content;
 
-        void createNote()
-        {
-            cout << "Enter note title: ";
-            cin.ignore();
-            getline(cin, title);
-            cout << "Enter note content: ";
-            getline(cin, content);
-        }
-
-        void displayNote()
-        {
-            cout << "Title: " << title << endl;
-            cout << "Content: " << content << endl;
-        }
-
-        // .empty() function is used
-        bool isEmpty()
-        {
-            return title.empty() && content.empty();
-        }
-
-        // .clear() is used
-        void deleteNote()
-        {
-            title.clear();
-            content.clear();
-        }
-};
 int main()
 {
     int choice;
