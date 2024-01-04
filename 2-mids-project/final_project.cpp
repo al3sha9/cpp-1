@@ -7,6 +7,8 @@ using namespace std;
 
 const string NOTES_FILE = "notes.txt";
 
+// Alarm Class
+
 class Alarm
 {
 private:
@@ -16,18 +18,36 @@ private:
     int remainingSeconds;
     
 public:
+    // Alarm(){} //default constructor of Alarm class because error in main() 
     Alarm()
     {   
         alarmHour = 0;
         alarmMinute = 0;
         alarmSecond = 0;
+        // this->remainingSeconds = remainingSeconds;
         remainingSeconds = 0;
     }
 
     friend void setandGetAlarmTime(Alarm a);
-    friend void getTime(Alarm a);
-    void timeDifference()
-    {
+    friend void timeDifference(Alarm a);
+    friend void startAlarm(Alarm a);
+};
+
+// Friend functions of Alarm Class
+
+void setandGetAlarmTime(Alarm a){
+        a.alarmHour = 0;
+        a.alarmMinute = 0;
+        a.alarmSecond = 0;
+        a.remainingSeconds = 0;
+        cout << "Enter Alarm Time in 24-hour format [HH:MM:SS]: ";
+        cin >> a.alarmHour;
+        cin.ignore();
+        cin >> a.alarmMinute;
+        cin.ignore();
+        cin >> a.alarmSecond;
+}
+void timeDifference(Alarm a){
         int currentHour, currentMinute, currentSecond;
         cout << "Enter Current Time in 24-hour format [HH:MM:SS]: ";
         cin >> currentHour;
@@ -36,53 +56,36 @@ public:
         cin.ignore();
         cin >> currentSecond;
 
-        remainingSeconds = (alarmHour - currentHour) * 3600 +
-                           (alarmMinute - currentMinute) * 60 +
-                           (alarmSecond - currentSecond);
+        a.remainingSeconds = (a.alarmHour - currentHour) * 3600 + (a.alarmMinute - currentMinute) * 60 + (a.alarmSecond - currentSecond);
 
-        if (remainingSeconds < 0)
-        {
-            remainingSeconds += 86400;
+        if (a.remainingSeconds < 0){
+            a.remainingSeconds += 86400;
         }
-    }
-
-    void startAlarm()
-    {
-        while (remainingSeconds > 0)
-        {
-            int hours = remainingSeconds / 3600;
-            int minutes = (remainingSeconds % 3600) / 60;
-            int seconds = remainingSeconds % 60;
+}
+void startAlarm(Alarm a){
+        a.remainingSeconds = 0;
+        while (a.remainingSeconds > 0){
+            int hours = a.remainingSeconds / 3600;
+            int minutes = (a.remainingSeconds % 3600) / 60;
+            int seconds = a.remainingSeconds % 60;
 
             cout << "TIME REMAINING: " << hours << ":" << minutes << ":" << seconds << endl;
-            remainingSeconds--;
+            a.remainingSeconds--;
 
             for (int i = 0; i < 100000000; i++)
             {
             }
 
-            if (remainingSeconds == 0)
+            if (a.remainingSeconds == 0)
             {
                 cout << "ALARM TIME REACHED" << endl;
                 cout << '\a';
                 return;
             }
         }
-    }
-};
-
-//friend function
-void setandGetAlarmTime(Alarm a){
-        a.alarmHour = 0;
-        a.alarmMinute = 0;
-        a.alarmSecond = 0;
-        cout << "Enter Alarm Time in 24-hour format [HH:MM:SS]: ";
-        cin >> a.alarmHour;
-        cin.ignore();
-        cin >> a.alarmMinute;
-        cin.ignore();
-        cin >> a.alarmSecond;
 }
+
+// Calender class
 
 class Calendar
 {
@@ -281,37 +284,7 @@ private:
 class NoteTakingApp
 {
 private:
-    struct Note
-    {
-        string title;
-        string content;
 
-        void createNote()
-        {
-            cout << "Enter note title: ";
-            cin.ignore();
-            getline(cin, title);
-            cout << "Enter note content: ";
-            getline(cin, content);
-        }
-
-        void displayNote()
-        {
-            cout << "Title: " << title << endl;
-            cout << "Content: " << content << endl;
-        }
-
-        bool isEmpty()
-        {
-            return title.empty() && content.empty();
-        }
-
-        void deleteNote()
-        {
-            title.clear();
-            content.clear();
-        }
-    };
 
     Note notes[100];
     int noteCount;
@@ -434,7 +407,38 @@ private:
         outFile.close();
     }
 };
+class Note : public NoteTakingApp{
+        string title;
+        string content;
 
+        void createNote()
+        {
+            cout << "Enter note title: ";
+            cin.ignore();
+            getline(cin, title);
+            cout << "Enter note content: ";
+            getline(cin, content);
+        }
+
+        void displayNote()
+        {
+            cout << "Title: " << title << endl;
+            cout << "Content: " << content << endl;
+        }
+
+        // .empty() function is used
+        bool isEmpty()
+        {
+            return title.empty() && content.empty();
+        }
+
+        // .clear() is used
+        void deleteNote()
+        {
+            title.clear();
+            content.clear();
+        }
+};
 int main()
 {
     int choice;
@@ -569,8 +573,8 @@ int main()
         {
             Alarm myAlarm;
             setandGetAlarmTime(myAlarm);
-            myAlarm.timeDifference();
-            myAlarm.startAlarm();
+            timeDifference(myAlarm);
+            startAlarm(myAlarm);
             break;
         }
         case 6:
