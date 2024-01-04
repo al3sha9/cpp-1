@@ -7,35 +7,31 @@ using namespace std;
 
 const string NOTES_FILE = "notes.txt";
 const string USER_FILE = "users.txt";
+
 // User login 
-class User
-{
+class User{
 public:
     string username;
     string password;
 
-    User(const string &uname, const string &pword)
-    {
+    User(const string &uname, const string &pword){
         username = uname;
         password = pword;
     }
 
-    void saveUser() const
-    {
+    void saveUser() const {
         ofstream userFile(USER_FILE, ios::app);
-        if (userFile.is_open())
-        {
+        
+        if (userFile.is_open()){
             userFile << username << " " << password << endl;
             userFile.close();
         }
-        else
-        {
+        else{
             cout << "Error: Could not open the user file for writing." << endl;
         }
     }
 
-    static bool isUserRegistered(const string &username, const string &password)
-    {
+    static bool isUserRegistered(const string &username, const string &password){
         ifstream userFile(USER_FILE);
         string uname, pword;
         while (userFile >> uname >> pword)
