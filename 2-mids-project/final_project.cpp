@@ -753,7 +753,7 @@ int main()
     }
     catch (const exception &e)
     {
-        cerr << "An unexpected error occurred: " << e.what() << endl;
+        cout << "An unexpected error occurred: " << e.what() << endl;
     }
 
     return 0;
