@@ -1,33 +1,34 @@
 #include <iostream>
 using namespace std;
-class Alpha
+
+class B;
+class A
 {
 private:
-    int x;
+    int data;
 
 public:
-    Alpha(int a)
-    {
-        x = a;
-    }
-    friend class Beta;
+    A() : data(12) {}
+    friend float addBoth(A, B);
 };
 
-class Beta
+class B
 {
 private:
-    int y;
+    int data;
 
 public:
-    void func(Alpha obj)
-    {
-        cout << "x: " << obj.x;
-    }
+    B() : data(34) {}
+    friend float addBoth(A, B);
 };
+float addBoth(A a1, B b1)
+{
+    return (a1.data + b1.data);
+}
+
 int main()
 {
-    Alpha obj1(10);
-    Beta obj2;
-    obj2.func(obj1);
-    return 0;
+    A a;
+    B b;
+    cout << "ADDED" << addBoth(a, b);
 }
