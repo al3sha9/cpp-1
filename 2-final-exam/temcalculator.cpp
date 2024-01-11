@@ -16,17 +16,32 @@ public:
     }
     T add()
     {
-        return (num1 + num2);
+        if (num2 != 0)
+        {
+            return (num1 / num2);
+        }
+        else
+        {
+            throw runtime_error("Error: Division by zero");
+        }
     }
+
     void dis()
     {
-        cout << "adding num 1 and 2 is: " << add() << endl;
+        try
+        {
+            cout << "Result of dividing num1 by num2 is: " << add() << endl;
+        }
+        catch (const exception &e)
+        {
+            cerr << e.what() << endl;
+        }
     }
 };
 int main()
 {
     Calculator<float> obj1(34.55, 89.44);
-    Calculator<int> obj2(34, 89);
+    Calculator<int> obj2(34, 0);
     obj1.dis();
     obj2.dis();
     return 0;
