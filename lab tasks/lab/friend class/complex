@@ -1,0 +1,16 @@
+#include<iostream>
+using namespace std;
+
+class ComplexNumber{
+    private:
+    int real, imaginary;
+     
+    public:
+    friend class ComplexOperations;
+};
+class ComplexOperations{
+
+};
+int main(){
+    
+}
