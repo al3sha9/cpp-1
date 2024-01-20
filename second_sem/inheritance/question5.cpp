@@ -19,11 +19,11 @@ class student:public Person{
   }  
   void display(){
       cout<<"this is derived class"<<endl;
-      cout<<name<<address<<age;
+      cout<<name<<endl<<address<<endl<<age;
   }
 };
 int main(){
-    student std("hero", "abs", 39);
+    student std("Fazila", "XYZ", 20);
     std.display();
     return 0;
 }

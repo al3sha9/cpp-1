@@ -1,4 +1,3 @@
-// Online C++ compiler to run C++ program online
 #include <iostream>
 #include <string>
 using namespace std;
@@ -23,11 +22,11 @@ int main(){
     birds obj1;
     reptiles obj2;
     
-    obj.name = "gii";
+    obj.name = "Mammal";
     obj.age = 10;
     
-    obj1.name = "ii";
-    obj2.name = "ooo";
-    cout<<obj.name<<obj1.name<<obj2.name;
+    obj1.name = "Bird";
+    obj2.name = "Reptile";
+    cout<<obj.name<<endl<<obj1.name<<endl<<obj2.name<<endl;
        
 }
