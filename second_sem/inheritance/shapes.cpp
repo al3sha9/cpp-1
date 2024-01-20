@@ -5,12 +5,6 @@ class shapes{
     protected:
     float area;
     float perimeter;
-    
-    // public:
-    // shapes(int a, int p){
-    //     area = a;
-    //     perimeter = p;
-    // }
     ~shapes(){
         cout<<"The classes has been destroyed now!"<<endl;
     }

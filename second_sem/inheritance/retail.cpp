@@ -33,5 +33,4 @@ int main(){
     Electronics obj("Watch", "Blue");
     cout<<obj.display()<<endl; 
     obj.getDetails();
-    // cout<<obj.getDetails();
 }
