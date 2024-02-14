@@ -1,68 +1,59 @@
-
-// 4. Basic Calculator:
-// Develop a simple calculator program.
-// Define a class Calculator with methods to perform
-// addition, subtraction, multiplication, and division of  two numbers.
 #include <iostream>
 using namespace std;
 
-class Calculator
-{
+class Calculator {
 private:
     int a, b;
 
 public:
-    friend void getValues(Calculator c);
-    friend int addition(Calculator c);
-    friend int subtraction(Calculator c);
-    friend int multiplication(Calculator c);
-    friend float division(Calculator c);
+    void getValues() {
+        cout << "Enter the values for a and b: ";
+        cin >> a >> b;
+    }
+    int addition() {
+        return a + b;
+    }
+    int subtraction() {
+        return a - b;
+    }
+    int multiplication() {
+        return a * b;
+    }
+    float division() {
+        if (b != 0)
+            return static_cast<float>(a) / b;
+        else {
+            cout << "Error: Division by zero\n";
+            return 0;
+        }
+    }
 };
-void getValues(Calculator c){
-    cout<<"Enter the values for a and b: ";
-    cin>>c.a>>c.b;
-}
-int addition(Calculator c)
-{
-    return c.a + c.b;
-}
-int subtraction(Calculator c)
-{
-    return c.a - c.b;
-}
-int multiplication(Calculator c){
-    return c.a * c.b;
-}
-float division(Calculator c){
-    return c.a / c.b;
-}
-int main(){
+
+int main() {
     Calculator obj;
     int choice;
-    cout<<"Choose any one to perform\n 1. Addition 2. Subtraction 3. Multiplication 4. Division ";
-    cin>>choice;
-    switch (choice)
-    {
+    cout << "Choose any one to perform\n 1. Addition 2. Subtraction 3. Multiplication 4. Division ";
+    cin >> choice;
+    switch (choice) {
     case 1:
-        getValues(obj);
-        cout<<"Result = "<<addition(obj)<<endl;
+        obj.getValues();
+        cout << "Result = " << obj.addition() << endl;
         break;
     case 2:
-        getValues(obj);
-        cout<<"Result = "<<subtraction(obj)<<endl;
+        obj.getValues();
+        cout << "Result = " << obj.subtraction() << endl;
         break;
     case 3:
-        getValues(obj);
-        cout<<"Result = "<<multiplication(obj)<<endl;
+        obj.getValues();
+        cout << "Result = " << obj.multiplication() << endl;
         break;
     case 4:
-        getValues(obj);
-        cout<<"Result = "<<division(obj)<<endl;
+        obj.getValues();
+        cout << "Result = " << obj.division() << endl;
         break;
-    
     default:
-        cout<<"Invalid choice!";
+        cout << "Invalid choice!";
         break;
     }
-    return 0 ;
+    return 0;
 }
