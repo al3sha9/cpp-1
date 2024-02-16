@@ -23,7 +23,7 @@ class BankAccount{
         balance+=amountDep;
    }
     void withdraw(){
-        cout<<"Enter the amount you want to withdraw:";
+        cout<<"Enter the amount you want to withdraw:"<<endl;
         cin>>amountW;
         balance-=amountW;
     }
