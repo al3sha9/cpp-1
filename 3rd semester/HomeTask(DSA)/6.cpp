@@ -1,6 +1,3 @@
-// 6. Bank Account: Create a basic bank account program. 
-// Define a class BankAccount with attributes account number, balance, and account holder name.
-// Implement methods to deposit and withdraw money and display account details.
 #include<iostream>
 using namespace std;
 
