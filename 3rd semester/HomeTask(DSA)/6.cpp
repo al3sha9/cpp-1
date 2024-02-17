@@ -26,10 +26,10 @@ class BankAccount{
     }
     void display(){
         cout<<"Amount in account: "<<balance<<endl;
-        cout<<"Amount deposited: "<<amountDep<<endl;;
-        cout<<"Amount withdrawed: "<<amountW<<endl;;
-        cout<<"Name of the account holder: "<<name<<endl;;
-        cout<<"Account Number: "<<accountNumber<<endl;;
+        cout<<"Amount deposited: "<<amountDep<<endl;
+        cout<<"Amount withdrawed: "<<amountW<<endl;
+        cout<<"Name of the account holder: "<<name<<endl;
+        cout<<"Account Number: "<<accountNumber<<endl;
     }
 };
 int main(){
