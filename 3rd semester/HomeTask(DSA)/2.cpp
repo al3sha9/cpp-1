@@ -1,9 +1,4 @@
-/*
-2. Calculate Area:
-Write a program to calculate the area of a rectangle.
-Define a class Rectangle with attributes length and width.
-Implement a method to calculate the area.
-*/
+
 #include <iostream>
 using namespace std;
 
