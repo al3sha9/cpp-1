@@ -18,7 +18,7 @@ void rentVehicle(Vehicle& vehicle) {
         vehicle.available = false;
         cout << "Vehicle rented successfully!" << endl;
     } else {
-        cout << "Vehicle is not available for rent." << endl;
+        //cout << "Vehicle is not available for rent." << endl;
     }
 }
 
