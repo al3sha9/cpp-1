@@ -47,5 +47,5 @@ int main() {
     cout << "Total sales: " << totalSales << endl;
     cout << "Average monthly sales: " << averageMonthlySales << endl;
 
-    return 0;
+    // return 0;
 }
