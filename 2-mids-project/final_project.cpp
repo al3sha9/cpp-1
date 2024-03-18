@@ -2,6 +2,7 @@
 #include <ctime>
 #include <fstream>
 #include <string>
+#include <stack>
 
 using namespace std;
 
@@ -54,7 +55,6 @@ public:
 };
 
 // Alarm Class
-
 class Alarm
 {
 private:
@@ -64,13 +64,11 @@ private:
     int remainingSeconds;
 
 public:
-    // Alarm(){} //default constructor of Alarm class because error in main()
     Alarm()
     {
         alarmHour = 0;
         alarmMinute = 0;
         alarmSecond = 0;
-        // this->remainingSeconds = remainingSeconds;
         remainingSeconds = 0;
     }
 
@@ -80,7 +78,6 @@ public:
 };
 
 // Friend functions of Alarm Class
-
 void setandGetAlarmTime(Alarm &a)
 {
     a.alarmHour = 0;
@@ -136,7 +133,7 @@ void startAlarm(Alarm &a)
     }
 }
 
-//  Base class (DateInfo) providing common functionality related to date information.
+// Base class (DateInfo) providing common functionality related to date information.
 class DateInfo
 {
 protected:
@@ -245,105 +242,56 @@ public:
     }
 };
 
+class Task
+{
+public:
+    string description;
+    bool isCompleted;
+
+    Task(const string &desc) : description(desc), isCompleted(false) {}
+};
+
 class TaskList
 {
 private:
-    string tasks[100];
-    bool taskCompleted[100];
-    int taskCount;
+    stack<Task> tasks;
 
 public:
-    TaskList() : taskCount(0)
+    void addTask(const string &description)
     {
-        loadTasksFromFile();
-        for (int i = 0; i < 100; i++)
-        {
-            taskCompleted[i] = false;
-        }
+        Task task(description);
+        tasks.push(task);
     }
 
-    ~TaskList()
+    void markTaskAsCompleted()
     {
-        saveTasksToFile();
+        if (!tasks.empty())
+        {
+            tasks.top().isCompleted = true;
+        }
+        else
+        {
+            cout << "No tasks to mark as completed." << endl;
+        }
     }
 
     void displayTasks()
     {
-        cout << "To-Do List:" << endl;
-        for (int i = 0; i < taskCount; i++)
+        if (tasks.empty())
         {
-            cout << i + 1 << ". " << (taskCompleted[i] ? "[X] " : "[ ] ") << tasks[i] << endl;
+            cout << "No tasks found." << endl;
+            return;
         }
-    }
 
-    void addTask(const string &task)
-    {
-        if (taskCount < 100)
-        {
-            tasks[taskCount] = task;
-            taskCount++;
-            taskCompleted[taskCount - 1] = false;
-        }
-        else
-        {
-            cout << "Error: Task limit reached." << endl;
-        }
-    }
+        stack<Task> tempTasks = tasks;
 
-    void markTaskAsCompleted(int taskIndex)
-    {
-        if (taskIndex >= 1 && taskIndex <= taskCount)
+        cout << "Tasks:" << endl;
+        while (!tempTasks.empty())
         {
-            int index = taskIndex - 1;
-            if (!taskCompleted[index])
-            {
-                taskCompleted[index] = true;
-                cout << "Task " << taskIndex << " marked as completed." << endl;
-            }
-            else
-            {
-                cout << "Task " << taskIndex << " is already completed." << endl;
-            }
-        }
-        else
-        {
-            cout << "Error: Invalid task number." << endl;
-        }
-    }
+            Task task = tempTasks.top();
+            tempTasks.pop();
 
-private:
-    void saveTasksToFile()
-    {
-        ofstream file("todo.txt");
-
-        if (file.is_open())
-        {
-            for (int i = 0; i < taskCount; i++)
-            {
-                file << tasks[i] << endl;
-            }
-            file.close();
-        }
-        else
-        {
-            cout << "Error: Could not open the file for writing." << endl;
-        }
-    }
-
-    void loadTasksFromFile()
-    {
-        ifstream file("todo.txt");
-
-        if (file.is_open())
-        {
-            string task;
-            while (getline(file, task) && taskCount < 100)
-            {
-                tasks[taskCount] = task;
-                taskCompleted[taskCount] = false;
-                taskCount++;
-            }
-            file.close();
+            cout << task.description << " - " << (task.isCompleted ? "Completed" : "Pending") << endl;
         }
     }
 };
@@ -393,15 +341,19 @@ public:
     }
 };
 
-// Note class
+struct NoteNode
+{
+    NoteBase *note;
+    NoteNode *next;
+};
+
 class NoteTakingApp
 {
 private:
-    NoteBase *notes[100];
-    int noteCount;
+    NoteNode *head;
 
 public:
-    NoteTakingApp() : noteCount(0)
+    NoteTakingApp() : head(nullptr)
     {
         loadNotes();
     }
@@ -410,49 +362,60 @@ public:
     {
         saveNotes();
         // Release memory for dynamically allocated notes
-        for (int i = 0; i < noteCount; ++i)
+        NoteNode *current = head;
+        while (current != nullptr)
         {
-            delete notes[i];
+            NoteNode *next = current->next;
+            delete current->note;
+            delete current;
+            current = next;
         }
     }
 
     void createNote()
     {
-        if (noteCount < 100)
+        NoteNode *newNode = new NoteNode();
+        newNode->note = new Note();
+        newNode->next = nullptr;
+
+        newNode->note->createNote();
+
+        if (head == nullptr)
         {
-            notes[noteCount] = new Note();
-            notes[noteCount]->createNote();
-            noteCount++;
-            cout << "Note created successfully!" << endl;
+            head = newNode;
         }
         else
         {
-            cout << "Cannot create more notes. The maximum limit has been reached." << endl;
+            NoteNode *current = head;
+            while (current->next != nullptr)
+            {
+                current = current->next;
+            }
+            current->next = newNode;
         }
     }
 
     void viewNotes() const
     {
-        if (noteCount == 0)
+        if (head == nullptr)
         {
             cout << "No notes found." << endl;
             return;
         }
 
         cout << "Notes:" << endl;
-        for (int i = 0; i < noteCount; i++)
+        NoteNode *current = head;
+        while (current != nullptr)
         {
-            if (!notes[i]->isEmpty())
-            {
-                notes[i]->displayNote();
-                cout << "-------------------" << endl;
-            }
+            current->note->displayNote();
+            cout << "-------------------" << endl;
+            current = current->next;
         }
     }
 
     void deleteNote()
     {
-        if (noteCount == 0)
+        if (head == nullptr)
         {
             cout << "No notes to delete." << endl;
             return;
@@ -463,17 +426,34 @@ public:
         cin.ignore();
         getline(cin, title);
 
-        for (int i = 0; i < noteCount; i++)
+        if (head->note->title == title)
         {
-            if (notes[i]->title == title)
-            {
-                notes[i]->deleteNote();
-                cout << "Note deleted successfully!" << endl;
-                return;
-            }
+            NoteNode *temp = head;
+            head = head->next;
+            delete temp->note;
+            delete temp;
+            cout << "Note deleted successfully!" << endl;
+            return;
         }
 
-        cout << "Note with the given title not found." << endl;
+        NoteNode *current = head;
+        while (current->next != nullptr && current->next->note->title != title)
+        {
+            current = current->next;
+        }
+
+        if (current->next == nullptr)
+        {
+            cout << "Note with the given title not found." << endl;
+        }
+        else
+        {
+            NoteNode *temp = current->next;
+            current->next = current->next->next;
+            delete temp->note;
+            delete temp;
+            cout << "Note deleted successfully!" << endl;
+        }
     }
 
 private:
@@ -486,7 +466,7 @@ private:
             return;
         }
 
-        while (noteCount < 100 && inFile)
+        while (inFile)
         {
             string title, content;
             // read lines from the file
@@ -495,10 +475,26 @@ private:
 
             if (!title.empty() && !content.empty())
             {
-                notes[noteCount] = new Note();
-                notes[noteCount]->title = title;
-                notes[noteCount]->content = content;
-                noteCount++;
+                NoteNode *newNode = new NoteNode();
+                newNode->note = new Note();
+                newNode->next = nullptr;
+
+                newNode->note->title = title;
+                newNode->note->content = content;
+
+                if (head == nullptr)
+                {
+                    head = newNode;
+                }
+                else
+                {
+                    NoteNode *current = head;
+                    while (current->next != nullptr)
+                    {
+                        current = current->next;
+                    }
+                    current->next = newNode;
+                }
             }
         }
 
@@ -514,13 +510,12 @@ private:
             return;
         }
 
-        for (int i = 0; i < noteCount; i++)
+        NoteNode *current = head;
+        while (current != nullptr)
         {
-            if (!notes[i]->isEmpty())
-            {
-                outFile << notes[i]->title << endl;
-                outFile << notes[i]->content << endl;
-            }
+            outFile << current->note->title << endl;
+            outFile << current->note->content << endl;
+            current = current->next;
         }
 
         outFile.close();
@@ -645,7 +640,6 @@ int main()
             case 3:
             {
                 TaskList taskList;
-                string task;
 
                 while (true)
                 {
@@ -664,15 +658,15 @@ int main()
                     switch (taskChoice)
                     {
                     case 1:
-                        cout << "\nEnter the task: ";
-                        getline(cin, task);
-                        taskList.addTask(task);
+                    {
+                        string taskDescription;
+                        cout << "\nEnter the task description: ";
+                        getline(cin, taskDescription);
+                        taskList.addTask(taskDescription);
                         break;
+                    }
                     case 2:
-                        int taskIndex;
-                        cout << "\nEnter the task number to mark as completed: ";
-                        cin >> taskIndex;
-                        taskList.markTaskAsCompleted(taskIndex);
+                        taskList.markTaskAsCompleted();
                         break;
                     case 3:
                         cout << "Returning to the main menu." << endl;
