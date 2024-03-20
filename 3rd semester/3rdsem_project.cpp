@@ -9,7 +9,7 @@ using namespace std;
 const string NOTES_FILE = "notes.txt";
 const string USER_FILE = "users.txt";
 
-// User login
+// user login
 class User
 {
 public:
