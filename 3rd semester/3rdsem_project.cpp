@@ -33,7 +33,7 @@ public:
         }
         else
         {
-            cout << "Error: Could not open the user file for writin." << endl;
+            cout << "Error: Could not open the user file for writing." << endl;
         }
     }
 
