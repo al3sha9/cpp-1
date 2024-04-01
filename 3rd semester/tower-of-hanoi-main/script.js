@@ -1,73 +1,72 @@
+var time = null;
+var move_it;
+var increase_movement = 1;
+var sp = 0.1;
 
-var timer = null;
-var moveInfo;
-var moveIncrement = 1;
-var speed = 0.1;
+var stack;
 
-var callStack;
+var tower = [{}, {}, {}, {}, {}];
 
-var towerInfo = [{}, {}, {}, {}, {}];
-
-var diskPositionsTop, diskPositionsLeft, diskElements;
+var top_position, left_position, elements;
 
 window.onload = function () {
-    diskPositionsTop = [];
-    diskPositionsLeft = [];
-    diskElements = [disk0, disk1, disk2, disk3, disk4];
+    top_position = [];
+    left_position = [];
+    elements = [disk0, disk1, disk2, disk3, disk4];
     for (var i = 0; i < 5; i++) {
-        diskPositionsTop[i] = diskElements[i].style.top;
-        diskPositionsLeft[i] = diskElements[i].style.left;
+        top_position[i] = elements[i].style.top;
+        left_position[i] = elements[i].style.left;
     }
 }
 
-function executeHanoi() {
-    clearInterval(timer);
+function run_hanoi() {
+    clearInterval(time);
 
     for (var i = 0; i < 5; i++) {
-        diskElements[i].style.top = diskPositionsTop[i];
-        diskElements[i].style.left = diskPositionsLeft[i];
+        elements[i].style.top = top_position[i];
+        elements[i].style.left = left_position[i];
     }
 
-    towerInfo[0].disks = ['disk0', 'disk1', 'disk2', 'disk3', 'disk4'];
-    towerInfo[1].disks = [];
-    towerInfo[2].disks = [];
-    towerInfo[3].disks = [];
-    towerInfo[4].disks = [];
+    tower[0].disks = ['disk0', 'disk1', 'disk2', 'disk3', 'disk4'];
+    tower[1].disks = [];
+    tower[2].disks = [];
+    tower[3].disks = [];
+    tower[4].disks = [];
 
-    towerInfo[0].disks.pop();
-    towerInfo[0].disks.pop();
+    tower[0].disks.pop();
+    tower[0].disks.pop();
     disk3.style.display = "none";
     disk4.style.display = "none";
 
-    callStack = [];
+    stack = [];
 
-    moveDisks(3, 0, 2, 1);
+    disk_moving(3, 0, 2, 1);
 
-    moveSingleDisk();
+    disk_moving_single();
 }
 
 
 
-function moveDisks(count, from, to, via) {
+function disk_moving(count, from, to, via) {
     if (count == 0) return;
 
-    moveDisks(count - 1, from, via, to);
+    disk_moving(count - 1, from, via, to);
 
-    callStack.push([from, to]);
-    moveDisks(count - 1, via, to, from);
+    stack.push([from, to]);
+    disk_moving(count - 1, via, to, from);
 }
 
-function moveSingleDisk() {
-    if (callStack.length == 0) return;
+function disk_moving_single() {
+    if (stack.length == 0) return;
 
-    var parameters = callStack.shift();
+    var parameters = stack.shift();
     var fromTower = parameters[0];
     var toTower = parameters[1];
 
-    var disk = document.getElementById(towerInfo[fromTower].disks.pop());
+    var disk = document.getElementById(tower[fromTower].disks.pop());
     console.log(disk);
 
-    moveInfo = {
+    move_it = {
         disk: disk,
         fromTower: fromTower,
         toTower: toTower,
@@ -77,59 +76,59 @@ function moveSingleDisk() {
         endPosition: 60
     }
 
-    timer = setInterval(animateMove, speed);
+    time = setInterval(animation, sp);
 }
 
-function animateMove() {
-    var disk = moveInfo.disk;
-    var direction = moveInfo.direction;
+function animation() {
+    var disk = move_it.disk;
+    var direction = move_it.direction;
 
-    var currentPosition = parseInt(disk[(moveInfo.currentPosition == "left") ? "offsetLeft" : "offsetTop"]);
+    var currentPosition = parseInt(disk[(move_it.currentPosition == "left") ? "offsetLeft" : "offsetTop"]);
 
-    if (((direction == 1) && (currentPosition >= moveInfo.endPosition)) || ((direction == -1) && (currentPosition <= moveInfo.endPosition))) {
-        if (moveInfo.movementState == "up") {
-            moveInfo.movementState = "horizontal";
-            moveInfo.currentPosition = "left";
-            moveInfo.direction = 1;
-            if (moveInfo.fromTower > moveInfo.toTower) moveInfo.direction = -1;
-            var destinationTower = document.getElementById("bar" + moveInfo.toTower);
-            moveInfo.endPosition = destinationTower.offsetLeft - Math.floor(disk.offsetWidth / 2) + 15;
+    if (((direction == 1) && (currentPosition >= move_it.endPosition)) || ((direction == -1) && (currentPosition <= move_it.endPosition))) {
+        if (move_it.movementState == "up") {
+            move_it.movementState = "horizontal";
+            move_it.currentPosition = "left";
+            move_it.direction = 1;
+            if (move_it.fromTower > move_it.toTower) move_it.direction = -1;
+            var destinationTower = document.getElementById("bar" + move_it.toTower);
+            move_it.endPosition = destinationTower.offsetLeft - Math.floor(disk.offsetWidth / 2) + 15;
             return;
         }
 
-        else if (moveInfo.movementState == "horizontal") {
-            moveInfo.movementState = "down";
-            moveInfo.currentPosition = "top";
-            moveInfo.direction = 1;
-            moveInfo.endPosition = document.getElementById("bottombar").offsetTop - (towerInfo[moveInfo.toTower].disks.length + 1) * disk.offsetHeight;
+        else if (move_it.movementState == "horizontal") {
+            move_it.movementState = "down";
+            move_it.currentPosition = "top";
+            move_it.direction = 1;
+            move_it.endPosition = document.getElementById("bottombar").offsetTop - (tower[move_it.toTower].disks.length + 1) * disk.offsetHeight;
             return;
         }
 
         else {
-            clearInterval(timer);
-            towerInfo[moveInfo.toTower].disks.push(disk.id);
-            moveSingleDisk();
+            clearInterval(time);
+            tower[move_it.toTower].disks.push(disk.id);
+            disk_moving_single();
             return;
         }
     }
 
 
-    currentPosition = currentPosition + direction * moveIncrement;
-    disk.style[moveInfo.currentPosition] = currentPosition + "px";
+    currentPosition = currentPosition + direction * increase_movement;
+    disk.style[move_it.currentPosition] = currentPosition + "px";
 
-    if (moveInfo.movementState == "up") {
-        var originTower = document.getElementById("bar" + moveInfo.fromTower);
+    if (move_it.movementState == "up") {
+        var originTower = document.getElementById("bar" + move_it.fromTower);
         if (disk.offsetTop < originTower.offsetTop) {
             var insideImgHeight = disk.getElementsByClassName("insideImg")[0].offsetHeight;
-            if (insideImgHeight > 0) disk.getElementsByClassName("insideImg")[0].style.height = insideImgHeight - moveIncrement + "px";
+            if (insideImgHeight > 0) disk.getElementsByClassName("insideImg")[0].style.height = insideImgHeight - increase_movement + "px";
         }
     }
 
-    if (moveInfo.movementState == "down") {
-        var destinationTower = document.getElementById("bar" + moveInfo.toTower);
+    if (move_it.movementState == "down") {
+        var destinationTower = document.getElementById("bar" + move_it.toTower);
         if (disk.offsetTop > destinationTower.offsetTop) {
             var insideImgHeight = disk.getElementsByClassName("insideImg")[0].offsetHeight;
-            if (insideImgHeight < 14) disk.getElementsByClassName("insideImg")[0].style.height = insideImgHeight + moveIncrement + "px";
+            if (insideImgHeight < 14) disk.getElementsByClassName("insideImg")[0].style.height = insideImgHeight + increase_movement + "px";
         }
     }
 
