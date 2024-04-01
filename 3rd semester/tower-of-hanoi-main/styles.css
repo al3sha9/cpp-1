@@ -32,7 +32,7 @@
     padding: 0;
     margin: 0;
     position: absolute;
-    border: 1px solid gray;
+    /* border: 1px solid gray; */
     height: 26px;
     -moz-box-sizing: border-box;
     box-sizing: border-box;
@@ -85,7 +85,7 @@ img {
     padding: 0;
     margin: 0;
 }
-
+/* 
 .insideImg {
     z-index: 100;
     position: absolute;
@@ -93,4 +93,4 @@ img {
     top: -1px;
     height: 14px;
     width: 30px;
-}
+} */
