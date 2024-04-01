@@ -28,10 +28,14 @@ class _TowersOfHanoiPageState extends State<TowersOfHanoiPage> {
 
   // Stacks representing the stands
   List<List<int>> stacks = [
-    List<int>.generate(5, (index) => index + 1),
+    List<int>.generate(
+        5, (index) => 5 - index), // Initialize plates on the first stand
     [],
-    []
+    [],
   ];
+
+  // Flag to check if the game is won
+  bool gameWon = false;
 
   @override
   Widget build(BuildContext context) {
@@ -59,9 +63,7 @@ class _TowersOfHanoiPageState extends State<TowersOfHanoiPage> {
               : null;
           return DragTarget<int>(
             onAccept: (int plateSize) {
-              setState(() {
-                stacks[standIndex].insert(0, plateSize);
-              });
+              _movePlate(standIndex, plateSize);
             },
             builder: (context, candidateData, rejectedData) {
               return Container(
@@ -108,5 +110,60 @@ class _TowersOfHanoiPageState extends State<TowersOfHanoiPage> {
         },
       ).reversed.toList(),
     );
+  }
+
+  void _movePlate(int toStand, int plateSize) {
+    setState(() {
+      // Check if the game is already won
+      if (!gameWon) {
+        // Check if the move is valid
+        if (_isValidMove(toStand, plateSize)) {
+          // Remove plate from the previous stand
+          for (int i = 0; i < stacks.length; i++) {
+            if (stacks[i].contains(plateSize)) {
+              stacks[i].remove(plateSize);
+              break;
+            }
+          }
+          // Add plate to the new stand
+          stacks[toStand].insert(0, plateSize);
+          // Check for win condition
+          _checkWinCondition();
+        }
+      }
+    });
+  }
+
+  bool _isValidMove(int toStand, int plateSize) {
+    // If the destination stand is empty or the plate being moved is smaller
+    // than the top plate on the destination stand, the move is valid
+    return stacks[toStand].isEmpty || plateSize < stacks[toStand].first;
+  }
+
+  void _checkWinCondition() {
+    // Check if all plates are on the last stand
+    if (stacks[2].length == numberOfPlates) {
+      setState(() {
+        gameWon = true;
+      });
+      // Display a dialog indicating that the game is won
+      showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: Text('Congratulations!'),
+            content: Text('You won the game!'),
+            actions: [
+              TextButton(
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+                child: Text('OK'),
+              ),
+            ],
+          );
+        },
+      );
+    }
   }
 }
