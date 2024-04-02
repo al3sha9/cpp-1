@@ -1,18 +1,25 @@
 #include <iostream>
+#include <string>
 using namespace std;
 
 class Node {
 public:
-    int data;
+    string message;
     Node* next;
 };
 
-class Customer {
+class TransmitMessage {
 public:
-    string name;
-    int items;
+    string sender;
+    string Reciever;
+    string message;
 
-    Customer(string name, int items) : name(name), items(items) {}
+    TransmitMessage(string sender, string Reciever, string message) {
+    this->sender = sender;
+    this->Reciever = Reciever;
+    this->message = message;
+}
+
 };
 
 class Queue {
@@ -20,19 +27,17 @@ private:
     Node* head;
     Node* tail;
     int size;
-    int sum;
 
 public:
     Queue() {
         this->head = NULL;
         this->tail = NULL;
         this->size = 0;
-        this->sum = 0;
     }
 
-    void enqueue(Customer customer) {
+    void enqueue(TransmitMessage transmit_message) {
         Node* newNode = new Node();
-        newNode->data = customer.items;
+        newNode->message = transmit_message.message;
         newNode->next = NULL;
         if (this->head == NULL) {
             this->head = this->tail = newNode;
@@ -42,55 +47,50 @@ public:
             this->tail = newNode;
         }
         this->size++;
-        this->sum += customer.items;
     }
 
     void dequeue() {
         if (this->head == NULL) {
-            cout << "UnderFLow" << endl;
+            cout << "Under flow." << endl;
             return;
         }
         else {
             Node* oldhead = this->head;
             this->head = this->head->next;
-            if (this->head == NULL) this->tail = NULL;
-            this->sum -= oldhead->data;
             delete oldhead;
+            if (this->head == NULL) this->tail = NULL;
             this->size--;
         }
     }
 
-    double getAverage() {
-        if (this->size > 0)
-            return static_cast<double>(this->sum) / this->size;
-        else
-            return 0.0;
-    }
-
     void printQueue() {
         Node* temp = head;
-        cout << "**Queue** ";
+        cout << "Queue: \n";
         while (temp != NULL) {
-            cout << temp->data << " ";
+            cout << temp->message << " ";
             temp = temp->next;
         }
         cout << endl;
+    }
+
+    int getSize() {
+        return this->size;
     }
 };
 
 int main() {
     Queue q;
-    q.enqueue(Customer("customer1", 5));
-    q.enqueue(Customer("customer2", 3));
-    q.enqueue(Customer("customer3", 2));
-    q.enqueue(Customer("customer4", 4));
+    q.enqueue(TransmitMessage("Fazila", "Roshan", "Hello Roshan!\n"));
+    q.enqueue(TransmitMessage("Roshan", "Fazila", "Hi Fazila!\n"));
+    q.enqueue(TransmitMessage("Fazila", "Khan", "Hey Khan!\n"));
+    q.enqueue(TransmitMessage("Khan", "Fazila", "Hi Fazila!"));
 
     q.printQueue();
 
     q.dequeue();
     q.dequeue();
 
-    cout << "Average: " << q.getAverage() << endl;
+    cout << "Size of the queue is:" << q.getSize() << endl;
 
     return 0;
 }
