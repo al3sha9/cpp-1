@@ -13,7 +13,7 @@ private:
     Node* head;
     Node* tail;
     int size;
-
+//publicc
 public:
     QueueManagement() {
         this->head = nullptr;
