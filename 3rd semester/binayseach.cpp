@@ -1,6 +1,6 @@
 #include <iostream>
 using namespace std;
-
+//binarry search tree
 int binarySearch(int arr[], int size, int element) {
     int low = 0, high = size - 1, mid;
     while (low <= high) {
