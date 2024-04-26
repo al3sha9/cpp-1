@@ -40,7 +40,7 @@ public:
 int main()
 {
     Ebook E1("7 effects", "ALI SHAN");
-    Book E2("8 effects", "DADDY");
+    Book E2("8 effects", "kjashd");
 
     cout << "EBOOK DETAILS: " << E1.getN() << E1.getA() << endl;
     cout << "Book DETAILS: " << E2.getN() << E2.getA() << endl;
