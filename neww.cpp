@@ -10,7 +10,7 @@ private:
 public:
     Animals(int a, string n)
     {
-        age = a;
+        age = a;//age
         name = n;
     }
     int getAge()
