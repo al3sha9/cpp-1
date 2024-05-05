@@ -5,13 +5,13 @@ class Animals
 {
 private:
     int age;
-    string name;
+    string name;//name
 
 public:
     Animals(int a, string n)
     {
         age = a;//age
-        name = n;
+        name = n;//nameee .
     }
     int getAge()
     {
