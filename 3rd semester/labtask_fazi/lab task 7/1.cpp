@@ -7,15 +7,15 @@ void occurance(int n[], int size, int t) {
     int last = -1;
     
     for (int i = 0; i < size; ++i) {
-        if (n[i] == t) {
-            if (first == -1) {
-                first = i;
+        if (n[i] == t) { // agar n [index] equal hai 'target key' ky 
+            if (first == -1) { //or sath hi sath first variable abhi tak -1 hai 
+                first = i; //tou first ko wo target key jo 'i' hai wo first ma store kare ge.
             }
-            last = i;
+            last = i; //nahi agar first != 't' tou wo last variable ma index store kare ge.
         }
     }
     
-    if (first != -1) {
+    if (first != -1) { //first  found hua hai (!= -1) then ham display karege
         cout << "The first occurrence of element " << t << " is located at index " << first << endl;
         cout << "The last occurrence of element " << t << " is located at index " << last << endl;
     } else {
