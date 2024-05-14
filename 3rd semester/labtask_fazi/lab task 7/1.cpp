@@ -3,8 +3,8 @@
 using namespace std;
 
 void occurance(int n[], int size, int t) {
-    int first = -1;
-    int last = -1;
+    int first= 1;
+    int last = 0;
     
     for (int i = 0; i < size; ++i) {
         if (n[i] == t) { // agar n [index] equal hai 'target key' ky 
@@ -16,6 +16,7 @@ void occurance(int n[], int size, int t) {
     }
     
     if (first != -1) { //first  found hua hai (!= -1) then ham display karege
+    //first occurance yani pehle kahan se shuru  horha or last kahan se hai
         cout << "The first occurrence of element " << t << " is located at index " << first << endl;
         cout << "The last occurrence of element " << t << " is located at index " << last << endl;
     } else {
@@ -24,7 +25,7 @@ void occurance(int n[], int size, int t) {
 }
 
 int main() {
-    int n[] = {2, 5, 5, 5, 6, 6, 8, 9, 9, 9};
+    int n[] = {2, 5, 6, 6, 8, 5, 9, 9, 9};
     int size = sizeof(n) / sizeof(n[0]);
     int target = 5;
     

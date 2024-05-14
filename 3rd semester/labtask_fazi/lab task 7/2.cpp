@@ -15,7 +15,7 @@ int smallest(int n[], int size) {
         else {
             left = mid + 1;
         }
-    }
+    }   
     
     return left;
 }
