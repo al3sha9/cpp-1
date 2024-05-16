@@ -10,7 +10,7 @@ int binarySearch(int arr[], int size, int searchValue){
         return mid;
     }
     else if(searchValue>mid){
-        low = mid+1;
+        low = mid+1; //updating low
     }
     else
         high = mid-1;
