@@ -94,6 +94,7 @@ public:
     }
 
     // Binary Search implementation
+    //allows the user to input a day to search for, and it uses the binarySearch function to find and print the result.
     int binarySearch(int arr[], int low, int high, int key)
     {
         while (low <= high)
