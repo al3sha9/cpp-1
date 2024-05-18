@@ -1,0 +1,2 @@
+exampleUser examplePass
+fazila 123
