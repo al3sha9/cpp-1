@@ -1,0 +1,2 @@
+Name: John Doe, Employee ID: 1001, Salary: $5000
+Name: Alice Smith, Employee ID: 1002, Salary: $1600
