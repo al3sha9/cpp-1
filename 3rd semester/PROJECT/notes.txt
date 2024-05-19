@@ -1,6 +1,10 @@
+DNA
+dna and ssdf
+fa
+fffff
 hello
 hello world
 tree traversal
 bfs dfs
-fa
-fffff
+type
+tyepofan
