@@ -1,0 +1,2 @@
+FullTime John Doe 5000.00
+PartTime Jane Smith 1600.00
