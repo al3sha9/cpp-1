@@ -16,6 +16,7 @@ class User;
 
 string description; // Define description here
 
+// USER - CLASS
 class User
 {
 public:
@@ -94,7 +95,45 @@ bool linearSearch(User *users, int count, const string &username, const string &
     }
     return false;
 }
+void displayUsers(const User *users, int count)
+{
+    if (count == 0)
+    {
+        cout << "No users found." << endl;
+        return;
+    }
 
+    for (int i = 0; i < count; i++)
+    {
+        cout << "User " << i + 1 << ": " << endl;
+        cout << "Username: " << users[i].username << endl;
+        cout << "Password: " << users[i].password << endl;
+        cout << "-------------------" << endl;
+    }
+}
+void addUser()
+{
+    string uname, pword;
+    cout << "Enter username: ";
+    cin >> uname;
+    cout << "Enter password: ";
+    cin >> pword;
+
+    User newUser(uname, pword);
+    newUser.saveUser();
+    cout << "User added successfully!" << endl;
+}
+
+void displayMenu()
+{
+    cout << "1. Add User" << endl;
+    cout << "2. Display Users" << endl;
+    cout << "3. Sort Users" << endl;
+    cout << "4. Search User" << endl;
+    cout << "5. Exit" << endl;
+}
+
+// TASK - CLASS
 class Task
 {
 public:
@@ -196,7 +235,7 @@ public:
     }
 };
 
-// Base class
+// NOTES - CLASS
 class NoteBase
 {
 public:
@@ -472,7 +511,9 @@ private:
         delete[] rightNotes;
     }
 };
+const int MAX_DAYS = 32;
 
+// CALENDER - CLASS
 class DateInfo
 {
 protected:
@@ -520,7 +561,23 @@ public:
 
 class Calendar : public DateInfo
 {
+private:
+    string events[MAX_DAYS]; // Array to store events
+
 public:
+    Calendar()
+    {
+        // Initialize the events
+        for (int i = 0; i < MAX_DAYS; i++)
+        {
+            events[i] = "";
+        }
+
+        // Add specific events
+        events[1] = "Labour's Day";
+        events[11] = "Cousin's Birthday";
+    }
+
     void displayCurrentMonthCalendar()
     {
         int year = getYear();
@@ -531,7 +588,6 @@ public:
         cout << "\t\t  " << year << " - " << month << "   \n";
         cout << " Su  Mo  Tu  We  Th  Fr  Sa\n";
 
-        int daysArray[32]; // Store the days of the month for sorting
         for (int i = 0; i < startingDay; i++)
         {
             cout << "    ";
@@ -539,7 +595,6 @@ public:
 
         for (int i = 1; i <= daysInMonth; i++)
         {
-            daysArray[i] = i; // Store the days in an array for sorting
             if (i < 10)
                 cout << " ";
             if (i == day)
@@ -550,34 +605,26 @@ public:
                 cout << endl;
         }
 
-        // Example of binary search
+        // Prompt user to search for a day
         int searchDay;
-        cout << "\nEnter the day to search: ";
+        cout << "\nEnter the day to search for an event: ";
         cin >> searchDay;
-        int binaryResult = binarySearch(daysArray, 1, daysInMonth, searchDay);
-        if (binaryResult != -1)
-            cout << "Binary Search (Found at index) " << binaryResult << endl;
-        else
-            cout << "Binary Search (Not found)" << endl;
-    }
-    // Binary Search implementation
-    // allows the user to input a day to search for, and it uses the binarySearch function to find and print the result.
-    int binarySearch(int arr[], int low, int high, int key)
-    {
-        while (low <= high)
+
+        if (searchDay >= 1 && searchDay <= daysInMonth)
         {
-            int mid = low + (high - low) / 2;
-            if (arr[mid] == key)
-                return mid;
-            if (arr[mid] < key)
-                low = mid + 1;
+            if (!events[searchDay].empty())
+                cout << "Event on day " << searchDay << ": " << events[searchDay] << endl;
             else
-                high = mid - 1;
+                cout << "No event on day " << searchDay << "." << endl;
         }
-        return -1;
+        else
+        {
+            cout << "Invalid day." << endl;
+        }
     }
 };
 
+// MAIN FUNCTION
 int main() {
     // Load users
     int userCount;
@@ -643,7 +690,10 @@ int main() {
         cout << "1. Manage Tasks\n";
         cout << "2. Notes\n";
         cout << "3. Calendar\n";
-        cout << "4. Exit\n";
+        cout << "4. Display Users\n";
+        cout << "5. Sort Users\n";
+        cout << "6. Search User\n";
+        cout << "7. Exit\n";
         cout << "Enter your choice: ";
         cin >> choice;
 
@@ -736,6 +786,44 @@ int main() {
                 break;
 
             case 4:
+                // Display users
+                users = User::loadUsers(userCount);
+                for (int i = 0; i < userCount; ++i) {
+                    cout << "Username: " << users[i].username << ", Password: " << users[i].password << endl;
+                }
+                User::freeUsers(users);
+                break;
+
+            case 5:
+                // Sort users
+                users = User::loadUsers(userCount);
+                bubbleSort(users, userCount);
+                cout << "Users sorted successfully!" << endl;
+                for (int i = 0; i < userCount; ++i) {
+                    cout << "Username: " << users[i].username << ", Password: " << users[i].password << endl;
+                }
+                User::freeUsers(users);
+                break;
+
+            case 6:
+                // Search user
+                {
+                    string username, password;
+                    cout << "Enter username: ";
+                    cin >> username;
+                    cout << "Enter password: ";
+                    cin >> password;
+                    users = User::loadUsers(userCount);
+                    if (linearSearch(users, userCount, username, password)) {
+                        cout << "User found!" << endl;
+                    } else {
+                        cout << "User not found." << endl;
+                    }
+                    User::freeUsers(users);
+                }
+                break;
+
+            case 7:
                 cout << "Exiting the program." << endl;
                 break;
 
@@ -743,7 +831,7 @@ int main() {
                 cout << "Invalid choice. Please try again." << endl;
                 break;
         }
-    } while (choice != 4);
+    } while (choice != 7);
 
     // Free the dynamically allocated memory
     User::freeUsers(users);
