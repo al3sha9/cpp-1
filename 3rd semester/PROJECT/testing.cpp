@@ -8,13 +8,11 @@ using namespace std;
 const string USER_FILE = "users.txt";
 const string NOTES_FILE = "notes.txt";
 
-// Forward declarations
 class TaskList;
 class NoteTakingApp;
 class Calendar;
 class User;
-
-string description; // Define description here
+string description; 
 
 // USER - CLASS
 class User
