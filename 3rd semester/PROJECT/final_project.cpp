@@ -413,7 +413,7 @@ private:
 
         outFile.close();
     }
-    //divide them into two halves and sort the left and right 
+    // divide them into two halves and sort the left and right
     void mergeSort(int left, int right)
     {
         if (left < right)
@@ -424,7 +424,7 @@ private:
             merge(left, mid, right);
         }
     }
-    //merge the two halves
+    // merge the two halves
     void merge(int left, int mid, int right)
     {
         int n1 = mid - left + 1;
@@ -578,10 +578,11 @@ public:
     }
 };
 
-int main() {
+int main()
+{
     // Load users
     int userCount;
-    User* users = User::loadUsers(userCount);
+    User *users = User::loadUsers(userCount);
     TaskList taskList;
     NoteTakingApp app;
     Calendar calendar;
@@ -593,14 +594,28 @@ int main() {
 
     // User login or registration
     bool isLoggedIn = false;
-    while (!isLoggedIn) {
+    while (!isLoggedIn)
+    {
+        cout << "\n\t\t\t\tWelcome to the\n"
+             << endl;
+        cout << "T)tttttt   A)aa    S)ssss  K)   kk      M)mm mmm    A)aa   N)n   nn   A)aa     G)gggg E)eeeeee R)rrrrr  " << endl;
+        cout << "   T)     A)  aa  S)    ss K)  kk      M)  mm  mm  A)  aa  N)nn  nn  A)  aa   G)      E)       R)    rr " << endl;
+        cout << "   T)    A)    aa  S)ss    K)kkk       M)  mm  mm A)    aa N) nn nn A)    aa G)  ggg  E)eeeee  R)  rrr  " << endl;
+        cout << "   T)    A)aaaaaa      S)  K)  kk      M)  mm  mm A)aaaaaa N)  nnnn A)aaaaaa G)    gg E)       R) rr    " << endl;
+        cout << "   T)    A)    aa S)    ss K)   kk     M)      mm A)    aa N)   nnn A)    aa  G)   gg E)       R)   rr  " << endl;
+        cout << "   T)    A)    aa  S)ssss  K)    kk    M)      mm A)    aa N)    nn A)    aa   G)ggg  E)eeeeee R)    rr " << endl;
+        cout << "\n\n_________________________" << endl;
+
         cout << "1. Register new user" << endl;
         cout << "2. Login" << endl;
         cout << "3. Exit" << endl;
         cout << "Enter your choice: ";
+        cout << "\n\n_________________________" << endl;
+
         cin >> choice;
 
-        if (choice == 1) {
+        if (choice == 1)
+        {
             string username, password;
             cout << "Enter new username: ";
             cin >> username;
@@ -615,30 +630,40 @@ int main() {
             delete[] users;
             users = User::loadUsers(userCount);
             bubbleSort(users, userCount);
-        } else if (choice == 2) {
+        }
+        else if (choice == 2)
+        {
             string username, password;
             cout << "Enter username: ";
             cin >> username;
             cout << "Enter password: ";
             cin >> password;
 
-            if (linearSearch(users, userCount, username, password)) {
+            if (linearSearch(users, userCount, username, password))
+            {
                 cout << "Login successful." << endl;
                 isLoggedIn = true;
-            } else {
+            }
+            else
+            {
                 cout << "Invalid username or password." << endl;
             }
-        } else if (choice == 3) {
+        }
+        else if (choice == 3)
+        {
             // Free the dynamically allocated memory before exiting
             User::freeUsers(users);
             return 0;
-        } else {
+        }
+        else
+        {
             cout << "Invalid choice. Please try again." << endl;
         }
     }
 
     // Main menu for accessing notes, calendar, and tasks
-    do {
+    do
+    {
         cout << "\nMain Menu:\n";
         cout << "1. Manage Tasks\n";
         cout << "2. Notes\n";
@@ -647,101 +672,109 @@ int main() {
         cout << "Enter your choice: ";
         cin >> choice;
 
-        switch (choice) {
-            case 1:
-                // Task menu
-                do {
-                    cout << "\nTask Manager Menu:\n";
-                    cout << "1. Add Task\n";
-                    cout << "2. Mark Top Task as Completed\n";
-                    cout << "3. Display Tasks\n";
-                    cout << "4. Search Task\n";
-                    cout << "5. Return to Main Menu\n";
-                    cout << "Enter your choice: ";
-                    cin >> choice;
-                    cin.ignore(); // To ignore the newline character left by cin
+        switch (choice)
+        {
+        case 1:
+            // Task menu
+            do
+            {
+                cout << "\nTask Manager Menu:\n";
+                cout << "1. Add Task\n";
+                cout << "2. Mark Top Task as Completed\n";
+                cout << "3. Display Tasks\n";
+                cout << "4. Search Task\n";
+                cout << "5. Return to Main Menu\n";
+                cout << "Enter your choice: ";
+                cin >> choice;
+                cin.ignore(); // To ignore the newline character left by cin
 
-                    switch (choice) {
-                        case 1:
-                            cout << "Enter task description: ";
-                            getline(cin, description);
-                            taskList.addTask(description);
-                            break;
-                        case 2:
-                            taskList.markTaskAsCompleted();
-                            break;
-                        case 3:
-                            taskList.displayTasks();
-                            break;
-                        case 4:
-                            cout << "Enter task description to search: ";
-                            getline(cin, description);
-                            int searchResult;
-                            searchResult = taskList.linearSearch(description);
-                            if (searchResult != -1) {
-                                cout << "\nTask \"" << description << "\" found at index " << searchResult << endl;
-                            } else {
-                                cout << "\nTask \"" << description << "\" not found" << endl;
-                            }
-                            break;
-                        case 5:
-                            break;
-                        default:
-                            cout << "Invalid choice. Please try again." << endl;
-                            break;
+                switch (choice)
+                {
+                case 1:
+                    cout << "Enter task description: ";
+                    getline(cin, description);
+                    taskList.addTask(description);
+                    break;
+                case 2:
+                    taskList.markTaskAsCompleted();
+                    break;
+                case 3:
+                    taskList.displayTasks();
+                    break;
+                case 4:
+                    cout << "Enter task description to search: ";
+                    getline(cin, description);
+                    int searchResult;
+                    searchResult = taskList.linearSearch(description);
+                    if (searchResult != -1)
+                    {
+                        cout << "\nTask \"" << description << "\" found at index " << searchResult << endl;
                     }
-                } while (choice != 5);
-                break;
-
-            case 2:
-                // Notes menu
-                do {
-                    cout << "\nNote Taking App Menu\n";
-                    cout << "1. Create Note\n";
-                    cout << "2. View Notes\n";
-                    cout << "3. Delete Note\n";
-                    cout << "4. DFS Traversal\n";
-                    cout << "5. Merge Sort Notes\n";
-                    cout << "6. Return to Main Menu\n";
-                    cout << "Enter your choice: ";
-                    cin >> choice;
-
-                    switch (choice) {
-                        case 1:
-                            app.createNote();
-                            break;
-                        case 2:
-                            app.viewNotes();
-                            break;
-                        case 3:
-                            app.deleteNote();
-                            break;
-                        case 4:
-                            app.dfsTraversal();
-                            break;
-                        case 5:
-                            app.mergeSortNotes();
-                            break;
-                        case 6:
-                            break;
-                        default:
-                            cout << "Invalid choice. Please try again." << endl;
+                    else
+                    {
+                        cout << "\nTask \"" << description << "\" not found" << endl;
                     }
-                } while (choice != 6);
-                break;
+                    break;
+                case 5:
+                    break;
+                default:
+                    cout << "Invalid choice. Please try again." << endl;
+                    break;
+                }
+            } while (choice != 5);
+            break;
 
-            case 3:
-                // Calendar menu
-                calendar.displayCurrentMonthCalendar();
-                break;
+        case 2:
+            // Notes menu
+            do
+            {
+                cout << "\nNote Taking App Menu\n";
+                cout << "1. Create Note\n";
+                cout << "2. View Notes\n";
+                cout << "3. Delete Note\n";
+                cout << "4. DFS Traversal\n";
+                cout << "5. Merge Sort Notes\n";
+                cout << "6. Return to Main Menu\n";
+                cout << "Enter your choice: ";
+                cin >> choice;
 
-            case 4:
-                cout << "Exiting the program." << endl;
-                break;
+                switch (choice)
+                {
+                case 1:
+                    app.createNote();
+                    break;
+                case 2:
+                    app.viewNotes();
+                    break;
+                case 3:
+                    app.deleteNote();
+                    break;
+                case 4:
+                    app.dfsTraversal();
+                    break;
+                case 5:
+                    app.mergeSortNotes();
+                    break;
+                case 6:
+                    break;
+                default:
+                    cout << "Invalid choice. Please try again." << endl;
+                }
+            } while (choice != 6);
+            break;
 
-            default:
-                cout << "Invalid choice. Please try again." << endl;
-                break;
+        case 3:
+            // Calendar menu
+            calendar.displayCurrentMonthCalendar();
+            break;
+
+        case 4:
+            cout << "Exiting the program." << endl;
+            break;
+
+        default:
+            cout << "Invalid choice. Please try again." << endl;
+            break;
         }
     } while (choice != 4);
 
