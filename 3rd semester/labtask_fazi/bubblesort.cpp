@@ -1,6 +1,6 @@
 #include<iostream>
 using namespace std;
-
+//Bubble Sort - 
 void swap(int *xp, int *yp){
     int temp = *xp;
     *xp = *yp;
@@ -15,14 +15,16 @@ void bubbleSort(int arr[], int n){
         }
     }
 }
-int main(){
-    int arr[]= {33 ,9, 2, 40, 1};
-    int size = sizeof(arr)/sizeof(arr[0]);
-    bubbleSort(arr, size);
-    
+void print(int arr[], int size){
     for(int i= 0; i<size;i++){
         cout<<arr[i]<<" ";
     }
     cout<<endl;
+}
+int main(){
+    int arr[]= {33 ,9, 2, 40, 1};
+    int size = sizeof(arr)/sizeof(arr[0]);
+    bubbleSort(arr, size);
+    print(arr,size);
     
 }
