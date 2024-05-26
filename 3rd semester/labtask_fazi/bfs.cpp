@@ -1,69 +1,88 @@
-#include <iostream> // Include the I/O stream library
-#include <queue> // Include the queue library
-#include <vector> // Include the vector library
+#include <iostream>
+#include <list>
 
-using namespace std; // Use the standard namespace
+using namespace std;
 
-// Function to perform Breadth First Search on a graph
-// represented using adjacency list
-void bfs(vector<vector<int>>& adjList, int startNode,
-         vector<bool>& visited)
-{
+// This class represents a directed graph using adjacency list representation
+class Graph {
+    int V; // No. of vertices
+
+    // Pointer to an array containing adjacency lists
+    list<int> *adj; 
+
+public:
+    Graph(int V); // Constructor
+
+    // function to add an edge to graph
+    void addEdge(int v, int w); 
+
+    // prints BFS traversal from a given source s
+    void BFS(int s); 
+};
+
+Graph::Graph(int V) {
+    this->V = V;
+    adj = new list<int>[V];
+}
+
+void Graph::addEdge(int v, int w) {
+    adj[v].push_back(w); // Add w to v’s list.
+}
+
+void Graph::BFS(int s) {
+    // Mark all the vertices as not visited
+    bool *visited = new bool[V];
+    for (int i = 0; i < V; i++)
+        visited[i] = false;
+
     // Create a queue for BFS
-    queue<int> q; // Declare a queue data structure of integers
+    list<int> queue;
 
     // Mark the current node as visited and enqueue it
-    visited[startNode] = true; // Mark the start node as visited
-    q.push(startNode); // Enqueue the start node
+    visited[s] = true;
+    queue.push_back(s);
 
-    // Iterate over the queue
-    while (!q.empty()) { // While the queue is not empty
+    // 'i' will be used to get all adjacent vertices of a vertex
+    list<int>::iterator i;
+
+    // Create a mapping from integers to characters
+    char map[6] = {'A', 'B', 'C', 'D', 'E', 'F'};
+
+    while (!queue.empty()) {
         // Dequeue a vertex from queue and print it
-        int currentNode = q.front(); // Get the front element of the queue
-        q.pop(); // Remove the front element from the queue
-        cout << currentNode << " "; // Print the current node
+        s = queue.front();
+        cout << map[s] << " "; // Use the mapping to print the original label
+        queue.pop_front();
 
-        // Get all adjacent vertices of the dequeued vertex
-        // currentNode If an adjacent has not been visited,
-        // then mark it visited and enqueue it
-        for (int neighbor : adjList[currentNode]) { // Iterate over adjacent vertices
-            if (!visited[neighbor]) { // If the neighbor has not been visited
-                visited[neighbor] = true; // Mark it as visited
-                q.push(neighbor); // Enqueue it
+        // Get all adjacent vertices of the dequeued vertex s
+        // If a adjacent has not been visited, then mark it visited
+        // and enqueue it
+        for (i = adj[s].begin(); i != adj[s].end(); ++i) {
+            if (!visited[*i]) {
+                queue.push_back(*i);
+                visited[*i] = true;
             }
         }
     }
 }
 
-// Function to add an edge to the graph
-void addEdge(vector<vector<int>>& adjList, int u, int v)
-{
-    adjList[u].push_back(v); // Add edge from u to v in the adjacency list
+int main() {
+    // Create a graph given in the diagram
+ /*     A
+       / \
+      B   C
+     /   / \
+    D   E   F
+ */
+    Graph g(6); 
+    g.addEdge(0, 1); 
+    g.addEdge(0, 2); 
+    g.addEdge(1, 3); 
+    g.addEdge(2, 4);
+    g.addEdge(2, 5); 
+
+    cout << "Breadth First Traversal is: ";
+    g.BFS(0); // Start BFS from A (0)
+
+    return 0;
 }
-
-int main()
-{
-    // Number of vertices in the graph
-    int vertices = 5; // Initialize the number of vertices
-
-    // Adjacency list representation of the graph
-    vector<vector<int>> adjList(vertices); // Declare a vector of vectors to represent the graph
-
-    // Add edges to the graph
-    addEdge(adjList, 0, 1); // Add edge from 0 to 1
-    addEdge(adjList, 0, 2); // Add edge from 0 to 2
-    addEdge(adjList, 1, 3); // Add edge from 1 to 3
-    addEdge(adjList, 1, 4); // Add edge from 1 to 4
-    addEdge(adjList, 2, 4); // Add edge from 2 to 4
-
-    // Mark all the vertices as not visited
-    vector<bool> visited(vertices, false); // Initialize a vector to mark visited vertices
-
-    // Perform BFS traversal starting from vertex 0
-    cout << "Breadth First Traversal starting from vertex "
-            "0: ";
-    bfs(adjList, 0, visited); // Perform BFS traversal from vertex 0
-
-    return 0; // Return 0 to indicate successful execution
-}
-
