@@ -8,6 +8,8 @@ using namespace std;
 const string USER_FILE = "users.txt";
 const string NOTES_FILE = "notes.txt";
 
+
+
 class TaskList;
 class NoteTakingApp;
 class Calendar;
@@ -465,7 +467,7 @@ private:
     void merge(int left, int mid, int right)
     {
         int n1 = mid - left + 1;
-        int n2 = right - mid;       
+        int n2 = right - mid;
 
         Note *leftNotes = new Note[n1];
         Note *rightNotes = new Note[n2];
