@@ -8,6 +8,8 @@ using namespace std;
 const string USER_FILE = "users.txt";
 const string NOTES_FILE = "notes.txt";
 
+
+
 class TaskList;
 class NoteTakingApp;
 class Calendar;
