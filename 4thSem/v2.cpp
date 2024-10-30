@@ -8,6 +8,7 @@
 using namespace std;
 
 void showMenu() {
+    cout << "\n\n_____________________________" << endl;
     cout << "\nLinux Command Helper with Pipes\n";
     cout << "1. List contents of the folder (ls)\n";
     cout << "2. Search for a term in listed files (ls | grep)\n";
@@ -29,7 +30,8 @@ void showMenu() {
     cout << "18. Display system hostname (hostname)\n";
     cout << "19. Show logged-in users (who)\n";
     cout << "20. Exit\n";
-    cout << "Choose an option: ";
+    cout << "_____________________________" << endl;
+    cout << "\nChoose an option: ";
 }
 
 void executeCommand(const char* command, char* const args[]) {
