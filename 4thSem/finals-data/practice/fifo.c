@@ -1,29 +1,55 @@
 #include <stdio.h>
 
-int main()
+void main()
 {
-  int numFrames, pageFaults = 0, frameCount = 0, refString[25], frames[10], stringLenght;
+    int i, j, k, numFrames, pageFaults = 0, frameCount = 0, referenceString[25], frames[10], stringLength;
 
-  printf("Enter lenght of string");
-  scanf("%d", stringLenght);
+    printf("\nEnter the length of reference string: ");
+    scanf("%d", &stringLength);
 
-  printf("Enter reference string");
-  for (int i = 0; i < stringLenght; i++)
-  {
-    scanf("%d", refString[i]);
-  }
+    printf("\nEnter the reference string: ");
+    for(i = 0; i < stringLength; i++)
+        scanf("%d", &referenceString[i]);
 
-  printf("Enter Number of frames");
-  scanf("%d", &numFrames);
+    printf("\nEnter the number of frames: ");
+    scanf("%d", &numFrames);
 
-  for (int i = 0; i < numFrames; i++)
-  {
-    frames[i] = -1;
-  }
+    // Initialize frames array with -1 (empty frames)
+    for(i = 0; i < numFrames; i++)
+        frames[i] = -1;
 
-  printf("Page replacement process is :");
+    printf("\nThe Page Replacement Process is:\n");
 
+    for(i = 0; i < stringLength; i++)
+    {
+        // Check if the current page is already in one of the frames
+        for(k = 0; k < numFrames; k++)
+        {
+            if(frames[k] == referenceString[i])
+                break;
+        }
 
+        // If the page is not found in any of the frames, replace a page
+        if(k == numFrames)
+        {
+            frames[frameCount++] = referenceString[i];
+            pageFaults++;
+        }
 
-  return 0;
+        // Display the current state of frames
+        for(j = 0; j < numFrames; j++)
+            printf("\t%d", frames[j]);
+
+        // If a page fault occurred, display the page fault number
+        if(k == numFrames)
+            printf("\tPF No. %d", pageFaults);
+
+        printf("\n");
+
+        // Reset the frame counter if we reach the maximum number of frames
+        if(frameCount == numFrames)
+            frameCount = 0;
+    }
+
+    printf("\nThe number of Page Faults using FIFO are %d", pageFaults);
 }
