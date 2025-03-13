@@ -27,7 +27,7 @@ public class PasswordManagerGUI extends JFrame {
             secretKey = keyGen.generateKey();
         } catch (Exception e) {
             JOptionPane.showMessageDialog(this, "Error initializing encryption: " + e.getMessage(),
-                                         "Error", JOptionPane.ERROR_MESSAGE);
+                "Error", JOptionPane.ERROR_MESSAGE);
             System.exit(1);
         }
 
@@ -35,7 +35,7 @@ public class PasswordManagerGUI extends JFrame {
         masterPassword = JOptionPane.showInputDialog(this, "Set your master password:");
         if (masterPassword == null || masterPassword.isEmpty()) {
             JOptionPane.showMessageDialog(this, "Master password is required!",
-                                         "Error", JOptionPane.ERROR_MESSAGE);
+                "Error", JOptionPane.ERROR_MESSAGE);
             System.exit(1);
         }
 
