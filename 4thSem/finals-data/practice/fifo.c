@@ -28,8 +28,6 @@ void main()
             if(frames[k] == referenceString[i])
                 break;
         }
-
-        // If the page is not found in any of the frames, replace a page
         if(k == numFrames)
         {
             frames[frameCount++] = referenceString[i];
