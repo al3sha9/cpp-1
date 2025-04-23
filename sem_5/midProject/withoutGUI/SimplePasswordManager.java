@@ -1,12 +1,13 @@
-import javax.crypto.Cipher;
-import javax.crypto.KeyGenerator;
-import javax.crypto.SecretKey;
 import java.io.*;
 import java.security.SecureRandom;
 import java.util.Base64;
 import java.util.Scanner;
+import javax.crypto.Cipher;
+import javax.crypto.KeyGenerator;
+import javax.crypto.SecretKey;
 
 class PasswordEntry {
+
     private String website;
     private String encryptedPassword;
 
@@ -25,13 +26,38 @@ class PasswordEntry {
 }
 
 class MnemonicGenerator {
+
     private static final String[] WORD_LIST = {
-        "apple", "book", "cat", "dog", "elephant",
-        "fish", "garden", "house", "ice", "jungle",
-        "king", "lion", "moon", "nest", "ocean",
-        "pencil", "queen", "river", "sun", "tree",
-        "umbrella", "violet", "water", "xray", "yellow",
-        "zebra", "bird", "cloud", "door", "eagle"
+        "apple",
+        "book",
+        "cat",
+        "dog",
+        "elephant",
+        "fish",
+        "garden",
+        "house",
+        "ice",
+        "jungle",
+        "king",
+        "lion",
+        "moon",
+        "nest",
+        "ocean",
+        "pencil",
+        "queen",
+        "river",
+        "sun",
+        "tree",
+        "umbrella",
+        "violet",
+        "water",
+        "xray",
+        "yellow",
+        "zebra",
+        "bird",
+        "cloud",
+        "door",
+        "eagle",
     };
 
     private SecureRandom random;
@@ -62,6 +88,7 @@ class MnemonicGenerator {
 }
 
 class PasswordStrengthChecker {
+
     public String checkStrength(String password) {
         int score = 0;
         StringBuilder feedback = new StringBuilder();
@@ -90,7 +117,9 @@ class PasswordStrengthChecker {
             feedback.append("Add lowercase letters for stronger password\n");
         }
 
-        if (password.matches(".*[!@#$%^&*()_+\\-=\\[\\]{};':\"\\\\|,.<>/?].*")) {
+        if (
+            password.matches(".*[!@#$%^&*()_+\\-=\\[\\]{};':\"\\\\|,.<>/?].*")
+        ) {
             score += 2;
         } else {
             feedback.append("Add special characters for stronger password\n");
@@ -105,22 +134,38 @@ class PasswordStrengthChecker {
             strength = "Weak";
         }
 
-        return strength + (feedback.length() > 0 ? "\nSuggestions:\n" + feedback.toString() : "");
+        return (
+            strength +
+            (feedback.length() > 0
+                    ? "\nSuggestions:\n" + feedback.toString()
+                    : "")
+        );
     }
 }
 
 class FileHandler {
+
     private static final String FILE_NAME = "passwords.txt";
 
     public void savePassword(PasswordEntry entry) throws IOException {
-        try (BufferedWriter writer = new BufferedWriter(new FileWriter(FILE_NAME, true))) {
-            writer.write(entry.getWebsite() + ":" + entry.getEncryptedPassword());
+        try (
+            BufferedWriter writer = new BufferedWriter(
+                new FileWriter(FILE_NAME, true)
+            )
+        ) {
+            writer.write(
+                entry.getWebsite() + ":" + entry.getEncryptedPassword()
+            );
             writer.newLine();
         }
     }
 
     public PasswordEntry findPassword(String website) throws IOException {
-        try (BufferedReader reader = new BufferedReader(new FileReader(FILE_NAME))) {
+        try (
+            BufferedReader reader = new BufferedReader(
+                new FileReader(FILE_NAME)
+            )
+        ) {
             String line;
             while ((line = reader.readLine()) != null) {
                 String[] parts = line.split(":");
@@ -134,6 +179,7 @@ class FileHandler {
 }
 
 public class SimplePasswordManager {
+
     private SecretKey secretKey;
     private String masterPassword;
     private FileHandler fileHandler;
@@ -152,6 +198,27 @@ public class SimplePasswordManager {
     }
 
     public void start() {
+        System.out.println(
+            "\t\t░▒▓█▓▒░░▒▓█▓▒░░▒▓██████▓▒░░▒▓█▓▒░░▒▓█▓▒░▒▓█▓▒░   ░▒▓████████▓▒░▒▓█▓▒░░▒▓█▓▒░ "
+        );
+        System.out.println(
+            "\t\t░▒▓█▓▒░░▒▓█▓▒░▒▓█▓▒░░▒▓█▓▒░▒▓█▓▒░░▒▓█▓▒░▒▓█▓▒░      ░▒▓█▓▒░   ░▒▓█▓▒░░▒▓█▓▒░ "
+        );
+        System.out.println(
+            "\t\t ░▒▓█▓▒▒▓█▓▒░░▒▓█▓▒░░▒▓█▓▒░▒▓█▓▒░░▒▓█▓▒░▒▓█▓▒░      ░▒▓█▓▒░   ░▒▓█▓▒░░▒▓█▓▒░ "
+        );
+        System.out.println(
+            "\t\t ░▒▓█▓▒▒▓█▓▒░░▒▓████████▓▒░▒▓█▓▒░░▒▓█▓▒░▒▓█▓▒░      ░▒▓█▓▒░    ░▒▓██████▓▒░  "
+        );
+        System.out.println(
+            "\t\t  ░▒▓█▓▓█▓▒░ ░▒▓█▓▒░░▒▓█▓▒░▒▓█▓▒░░▒▓█▓▒░▒▓█▓▒░      ░▒▓█▓▒░   ░▒▓█▓▒░░▒▓█▓▒░ "
+        );
+        System.out.println(
+            "\t\t  ░▒▓█▓▓█▓▒░ ░▒▓█▓▒░░▒▓█▓▒░▒▓█▓▒░░▒▓█▓▒░▒▓█▓▒░      ░▒▓█▓▒░   ░▒▓█▓▒░░▒▓█▓▒░ "
+        );
+        System.out.println(
+            "\t\t   ░▒▓██▓▒░  ░▒▓█▓▒░░▒▓█▓▒░░▒▓██████▓▒░░▒▓████████▓▒░▒▓█▓▒░   ░▒▓█▓▒░░▒▓█▓▒░ "
+        );
         try {
             System.out.print("Set your master password: ");
             masterPassword = scanner.nextLine();
@@ -203,7 +270,9 @@ public class SimplePasswordManager {
         String phrase = mnemonicGenerator.generatePhrase();
         System.out.println("Generated Mnemonic Phrase:");
         System.out.println(phrase);
-        System.out.println("\nPlease store this phrase safely. It can be used as a backup for your passwords.");
+        System.out.println(
+            "\nPlease store this phrase safely. It can be used as a backup for your passwords."
+        );
     }
 
     private void checkPasswordStrength() {
@@ -240,7 +309,9 @@ public class SimplePasswordManager {
             if (scanner.nextLine().equals(masterPassword)) {
                 Cipher decryptCipher = Cipher.getInstance("AES");
                 decryptCipher.init(Cipher.DECRYPT_MODE, secretKey);
-                byte[] decryptedBytes = decryptCipher.doFinal(Base64.getDecoder().decode(entry.getEncryptedPassword()));
+                byte[] decryptedBytes = decryptCipher.doFinal(
+                    Base64.getDecoder().decode(entry.getEncryptedPassword())
+                );
                 System.out.println("Password: " + new String(decryptedBytes));
             } else {
                 System.out.println("Wrong master password!");
