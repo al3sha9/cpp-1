@@ -3,12 +3,13 @@ import javax.swing.JOptionPane;
 public class Main {
 
     public static void main(String[] args) {
-        String name = JOptionPane.showInputDialog("Enter Your Name");
-        JOptionPane.showMessageDialog(null, "HELLO" + name);
-
-        int age = Integer.parseInt(
-            JOptionPane.showInputDialog("Enter Your Age")
+        String name = JOptionPane.showInputDialog("ENter your name");
+        String contactNumber = JOptionPane.showInputDialog(
+            "Enter your contact number"
         );
-        JOptionPane.showMessageDialog(null, "Your age is" + age);
+        String Salary = JOptionPane.showInputDialog("Enter your Salary");
+
+        String output = "Your details are: " + name + contactNumber + Salary;
+        JOptionPane.showMessageDialog(null, output);
     }
 }
